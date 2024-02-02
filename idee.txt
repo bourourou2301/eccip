@@ -1,0 +1,17 @@
+- 2 utilisateurs:
+  - creer offre
+  - accepter offre
+
+- Feed:
+  - Offre d'emplois
+    * Filter par: Domaine/ Heure/ Salaire/Location (Rayon) (TAG)
+
+- Chat (DM):
+  - Creer un chat une fois l'offre accepte
+
+- Live Video Chat (Coming Soon) 
+
+- Horaire:
+  - Tableau 2D
+  - Grille HTML
+  - Bloc de 30 minutes (24h)

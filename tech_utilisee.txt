@@ -1,5 +1,0 @@
-mongodb
-vercel
-svelte/ sveltekit
-nodejs
-html / css / js
