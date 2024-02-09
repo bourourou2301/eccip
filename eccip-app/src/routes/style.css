@@ -1,0 +1,17 @@
+* {
+    background-color: rgb(70, 65, 65);
+}
+
+.titre {
+    text-align: center;
+}
+
+.navbar {
+    display: flex;
+    gap: 20px;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+}
