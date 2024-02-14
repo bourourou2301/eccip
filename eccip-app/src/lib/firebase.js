@@ -1,24 +1,24 @@
 // Import the functions you need from the SDKs you need
-import { deleteApp, getApps, initializeApp, FirebaseApp } from 'firebase/app';
+import {initializeApp} from 'firebase/app';
 import { getDatabase } from "firebase/database";
-import { GoogleAuthProvider, getAuth } from 'firebase/auth';
-import { getStorage } from 'firebase/storage';
-// TODO: Add SDKs for Firebase products that you want to use
+import {getAuth } from 'firebase/auth';
+// TODO: Add SDKs for Firebase products that you want to unpm install -g firebase-toolsse
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
-const firebaseConfig = {
-	apiKey: import.meta.env.apiKey,
-	authDomain: import.meta.env.authDomain,
-	databaseURL: import.meta.env.databaseURL,
-	projectId: import.meta.env.projectId,
-	storageBucket: import.meta.env.storageBucket,
-	messagingSenderId: import.meta.env.messagingSenderId,
-	appId: import.meta.env.appId
-  };
 
+const firebaseConfig = {
+	apiKey: import.meta.env.VITE_API_KEY,
+	authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+	databaseURL: import.meta.env.VITE_DATABASE_URL,
+	projectId: import.meta.env.VITE_PROJECT_ID,
+	storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+	messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+	appId: import.meta.env.VITE_APP_ID
+  };
+  
 // Initialize Firebase
 const firebaseApp= initializeApp(firebaseConfig);
-const database = getDatabase(app);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
+const database = getDatabase(firebaseApp);
+const auth = getAuth(firebaseApp);
+export default {database, auth};
