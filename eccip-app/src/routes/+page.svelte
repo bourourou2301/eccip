@@ -17,7 +17,7 @@
     example of a database set, be sure to import the first line, in the second you add what methods u need (set, update, delete, ect)
 -->
 <script>
-import firebase from '$lib/firebase.js';
+import firebase from '$lib/firebase';
 import { set, ref } from 'firebase/database';
 var counter = 0;
 function writeToDatabase() {
