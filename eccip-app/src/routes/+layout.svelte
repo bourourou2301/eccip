@@ -1,6 +1,7 @@
 <script>
     import firebase from '$lib/firebase';
     import { set, ref } from 'firebase/database';
+	import Page from './accueil/+page.svelte';
     var counter = 0;
     function writeToDatabase() {
         const database = firebase.database;
@@ -13,12 +14,13 @@
     }
 </script>
 
+
 <div id="navbar-parent">
         <nav class="navbar">
-            <a href="">Accueil</a>
-            <a href="">Chat</a>
-            <a href="">Horaire</a>
-            <a href="">À propos</a>
+            <a href="/accueil">Accueil</a>
+            <a href="/chat">Chat</a>
+            <a href="/horaire">Horaire</a>
+            <a href="/a-propos">À propos</a>
         </nav>
         <div id="profile-pic"></div>
         <button on:click={writeToDatabase}>Write To Database</button>
