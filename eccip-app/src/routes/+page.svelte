@@ -1,2 +1,3 @@
 
-<h1>Welcome to Sveltekit Auth Firebase</h1>
+<h1>IDK WHAT IM DOING BUT ITS WORKING &#128511;&#128511;&#128511;&#128511;</h1>
+

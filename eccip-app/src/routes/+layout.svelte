@@ -61,6 +61,8 @@
 		<div>
 			{#if loggedIn}
 				<button on:click={logout}>Logout</button>
+            <h1>current user : {auth.currentUser?.email}
+            </h1>
 			{:else}
 				<a href="/login"> Login</a>
 			{/if}
