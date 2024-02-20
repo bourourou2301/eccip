@@ -54,6 +54,7 @@
       const provider = new GoogleAuthProvider();
       await signInWithPopup(auth, provider)
        .then((result) => {
+        
         const { displayName, email, photoURL, uid } = result?.user;
         session.set({
          loggedIn: true,

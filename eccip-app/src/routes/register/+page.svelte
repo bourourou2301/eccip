@@ -11,6 +11,7 @@
     let email: string = '';
     let password: string = '';
     let username: string = '';
+    let role: string = '';
    
     async function handleRegister() {
      await createUserWithEmailAndPassword(auth, email, password)
@@ -18,7 +19,8 @@
       let dbRef:any = "users/"+auth.currentUser?.uid;
        const { user } = result;
        set(ref(db, dbRef+"/email"), user.email);
-       set(ref(db, dbRef+"/username"), username)
+       set(ref(db, dbRef+"/username"), username);
+       set(ref(db, dbRef+"/role"), role);
        session.update((cur: any) => {
         return {
          ...cur,
@@ -42,6 +44,8 @@
      <input bind:value={email} type="text" placeholder="Email" />
      <input bind:value={password} type="password" placeholder="Password" />
      <input bind:value={username} type="username" placeholder="Username"/>
+     <input bind:group={role} type="radio" name="role" value="1">Poster
+     <input bind:group={role} type="radio" name="role" value="0">Searcher
      <button type="submit">Register</button>
     </form>
    </div>
