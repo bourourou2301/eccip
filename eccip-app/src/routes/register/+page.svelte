@@ -4,15 +4,21 @@
     import { createUserWithEmailAndPassword } from 'firebase/auth';
     import { goto } from '$app/navigation';
     import { session } from '$lib/session';
+	import { set, ref } from 'firebase/database';
    
+    let db = firebase.database;
     let auth = firebase.auth;
     let email: string = '';
     let password: string = '';
+    let username: string = '';
    
     async function handleRegister() {
      await createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
+      let dbRef:any = "users/"+auth.currentUser?.uid;
        const { user } = result;
+       set(ref(db, dbRef+"/email"), user.email);
+       set(ref(db, dbRef+"/username"), username)
        session.update((cur: any) => {
         return {
          ...cur,
@@ -35,6 +41,7 @@
      <h2>Register</h2>
      <input bind:value={email} type="text" placeholder="Email" />
      <input bind:value={password} type="password" placeholder="Password" />
+     <input bind:value={username} type="username" placeholder="Username"/>
      <button type="submit">Register</button>
     </form>
    </div>
