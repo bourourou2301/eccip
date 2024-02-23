@@ -15,10 +15,10 @@
 
 <div id="navbar-parent">
         <nav class="navbar">
-            <a href="">Accueil</a>
-            <a href="">Chat</a>
-            <a href="">Horaire</a>
-            <a href="">À propos</a>
+            <a href="/">Accueil</a>
+            <a href="/chat">Chat</a>
+            <a href="/horaire">Horaire</a>
+            <a href="/apropos">À propos</a>
         </nav>
         <div id="profile-pic"></div>
         <button on:click={writeToDatabase}>Write To Database</button>
