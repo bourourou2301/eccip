@@ -1,37 +1,71 @@
 <script lang="ts">
-    //import {writeToDatabase} from './+layout';
-    import {loading, loggedIn, logout, auth} from './+layout'
+import {session} from "$lib/stores/session";
+	import { onMount } from "svelte";
+	import { goto } from "$app/navigation";
+	import { signOut } from "firebase/auth";
+	import firebase from "$lib/firebase";
+	import type { LayoutData } from "./$types";
+    export let data: LayoutData;
+
+
+let loading:boolean = true;
+let loggedIn:boolean = false;
+
+session.subscribe((cur: any) => {   
+     loading = cur?.loading;
+     loggedIn = cur?.loggedIn;
+    });
+
+    
+     onMount(async () => {
+        const user: any = await data.getAuthUser();
+   
+     const loggedIn = !!user
+     session.update((cur: any) => {
+      loading = false;
+      return {
+       ...cur,
+       user,
+       loggedIn,
+       loading: false
+      };
+     });
+   
+     if (loggedIn) {
+      goto('/');
+     }
+     else{
+        goto('/connexion')
+     }
+    });
+    export function logout() {
+        signOut(firebase.auth).then(() =>{
+                goto("/connexion")
+                loggedIn = false;
+        }).catch((error) =>{
+            throw new Error(error);
+        })
+    }
 </script>
+    
 
 
 {#if loading}
 	<div>Loading...</div>
-    <div id="navbar-parent">
-        <nav class="navbar">
-            <a href="/">Accueil</a>
-            <a href="/chat">Chat</a>
-            <a href="/horaire">Horaire</a>
-            <a href="/a-propos">À propos</a>
-        </nav>
-        <div id="profile-pic"></div>
-        <button on:click={logout}>Se déconnecter</button>
-        <!--
-            <button on:click={writeToDatabase}>Write To Database</button>
-        --> 
-    </div>
-{:else}
+{:else if loggedIn}
 	<div>
 		Logged in: {loggedIn}
-
-		<div>
-			{#if loggedIn}
-				<button on:click="{logout}">Logout</button>
-            <h1>current user : {auth.currentUser?.email}
-            </h1>
-			{:else}
-				<a href="/connexion"> Login</a>
-			{/if}
-		</div>
+        <button on:click="{logout}">Logout</button>
+        <div id="navbar-parent">
+            <nav class="navbar">
+                <a href="/">Accueil</a>
+                <a href="/chat">Chat</a>
+                <a href="/horaire">Horaire</a>
+                <a href="/a-propos">À propos</a>
+            </nav>
+            <div id="profile-pic"></div>
+            <button on:click={logout}>Se déconnecter</button>
+        </div>  
 	</div>
 {/if}
 

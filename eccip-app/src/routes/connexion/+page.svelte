@@ -1,10 +1,40 @@
 <script lang="ts">
-    import {loginWithMail, email, password} from './+page';
-</script>
+	import { session } from '$lib/stores/session';
+     import firebase from '$lib/firebase';
+     import {
+      signInWithEmailAndPassword,
+      type UserCredential
+     } from 'firebase/auth';
+     import { goto } from '$app/navigation';
+    
+     let auth = firebase.auth;
+     let email: string = '';
+     let password: string = '';
 
+
+    
+     async function loginWithMail() {
+      await signInWithEmailAndPassword(auth, email, password)
+       .then((result) => {
+        const { user }: UserCredential = result;
+        session.set({
+         loggedIn: true,
+         user: {
+          displayName: user?.displayName,
+          email: user?.email,
+          photoURL: user?.photoURL,
+          uid: user?.uid
+         }
+        });
+        goto('/');
+       })
+       .catch((error) => {
+        return error;
+       });
+     }
+</script>
 <h1> BIENVENUE DANS ECCIP </h1>
 <h3>Veuillez-vous connecter ou créer un compte</h3>
-
 <div class="login-form">
     <h1>Login</h1>
     <form on:submit={loginWithMail}>
@@ -15,7 +45,7 @@
    
     <div>or</div>
    
-    <div>Don't you have an account? <a href="/register"> Register</a></div>
+    <div>Don't you have an account? <a href="/creer-compte"> Register</a></div>
    </div>
 
 <style>    
