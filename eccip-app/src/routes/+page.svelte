@@ -1,5 +1,6 @@
 <div id="page-entiere">
-    <h1 class="titre"> ECCIP </h1>
+    <h1> BIENVENUE DANS ECCIP </h1>
+    <h3>Veuillez-vous connecter ou créer un compte</h3>
 </div>
 
 
@@ -14,7 +15,7 @@
     height: 200vh;
 }
 
-.titre {
+h1, h3 {
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
 }

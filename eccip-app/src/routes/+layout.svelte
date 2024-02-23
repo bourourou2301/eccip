@@ -1,17 +1,5 @@
-<script>
-    import firebase from '$lib/firebase';
-    import { set, ref } from 'firebase/database';
-	import Page from './accueil/+page.svelte';
-    var counter = 0;
-    function writeToDatabase() {
-        const database = firebase.database;
-        const dataToWrite = {
-            TimeAtTimeOfButtonPress : new Date().toLocaleString()
-        };
-    const dbRef = ref(database, 'TimeAtButtonPress/PressNumber'+counter+'/');
-    counter = counter +1;
-    set(dbRef, dataToWrite);
-    }
+<script lang="ts">
+    import {writeToDatabase} from './+layout.server'
 </script>
 
 
@@ -30,7 +18,7 @@
 <style>
 #navbar-parent {
     background-color: rgb(62, 62, 155);
-    width: 150px;
+    width: 100px;
     height: 80vh;
     box-shadow: 10px 10px 10px #5e5454;
     padding: 20px;
@@ -58,7 +46,7 @@
 .navbar a {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
-        color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
     text-decoration: none;
     background-color: transparent;
 }
