@@ -12,34 +12,32 @@
     set(dbRef, dataToWrite);
     }
 </script>
-
-<div id="navbar-parent">
+    <div id="navbar-parent">
+        <div id="profile-pic"></div>
         <nav class="navbar">
             <a href="/">Accueil</a>
             <a href="/chat">Chat</a>
             <a href="/horaire">Horaire</a>
-            <a href="/apropos">À propos</a>
+            <a href="/profil">Mon profil</a>
         </nav>
-        <div id="profile-pic"></div>
-        <button on:click={writeToDatabase}>Write To Database</button>
-</div>
-<slot></slot>
+        <button on:click={writeToDatabase} class="btn btn-danger btn-sm">Se déconnecter</button>
+    </div>
+    <slot></slot>
 
 <style>
+    
 #navbar-parent {
     background-color: rgb(62, 62, 155);
-    width: 150px;
-    height: 80vh;
-    box-shadow: 10px 10px 10px #5e5454;
-    padding: 20px;
-    margin-left: 20px;
-    margin-top: 30px;
+    width: 120px;
+    height: 100vh;
+    box-shadow: 10px 10px 10px #19355a;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
     position: fixed;
-    border-radius: 20px;
+    margin-right: 2px;
+    
 }
 
 .navbar {
@@ -56,15 +54,17 @@
 .navbar a {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
-        color: rgb(0, 0, 0);
+        color: aliceblue;
     text-decoration: none;
-    background-color: transparent;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 #profile-pic {
     margin-left: auto;
     margin-right: auto;
-    margin-top: 50px;
+    margin-top: 10px;
+    margin-bottom: 50px;
     background-color: black;
     border-radius: 50%;
     width: 65px;
