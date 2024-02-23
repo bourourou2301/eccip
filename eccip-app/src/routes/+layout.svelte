@@ -1,9 +1,12 @@
 <script lang="ts">
-    import {writeToDatabase} from './+layout.server'
+    //import {writeToDatabase} from './+layout';
+    import {loading, loggedIn, logout, auth} from './+layout'
 </script>
 
 
-<div id="navbar-parent">
+{#if loading}
+	<div>Loading...</div>
+    <div id="navbar-parent">
         <nav class="navbar">
             <a href="/">Accueil</a>
             <a href="/chat">Chat</a>
@@ -11,8 +14,27 @@
             <a href="/a-propos">À propos</a>
         </nav>
         <div id="profile-pic"></div>
-        <button on:click={writeToDatabase}>Write To Database</button>
-</div>
+        <button on:click={logout}>Se déconnecter</button>
+        <!--
+            <button on:click={writeToDatabase}>Write To Database</button>
+        --> 
+    </div>
+{:else}
+	<div>
+		Logged in: {loggedIn}
+
+		<div>
+			{#if loggedIn}
+				<button on:click="{logout}">Logout</button>
+            <h1>current user : {auth.currentUser?.email}
+            </h1>
+			{:else}
+				<a href="/connexion"> Login</a>
+			{/if}
+		</div>
+	</div>
+{/if}
+
 <slot></slot>
 
 <style>
