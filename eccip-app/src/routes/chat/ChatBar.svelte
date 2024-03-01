@@ -10,36 +10,74 @@
             messageInput = ""; // Réinitialise le champ de saisie
         }
     }
+
+    /** 
+ * @param {KeyboardEvent} event 
+ */
+function handleKeyDown(event) {
+    if (event.key === "Enter") {
+        sendMessage();
+    }
+}
+
 </script>
 
 <style>
     /* Styles pour la barre de chat */
-    .chat-bar-container {
+    .chat-container {
         position: fixed;
-        top: 50%;
+        bottom: 0;
         left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #ffffff;
-        border: 1px solid #cccccc;
+        transform: translateX(-50%);
+        width: 100%;
+        max-width: 600px; /* Largeur maximale de la barre de chat */
+        box-sizing: border-box; /* Pour inclure les bordures et le padding dans la largeur */
         padding: 20px;
-        border-radius: 10px;
+        overflow-y: auto; /* Ajout d'un défilement vertical lorsque les messages dépassent la hauteur */
+        max-height: calc(100vh - 40px); /* Hauteur maximale du chat pour atteindre le haut de la page */
     }
 
-    .chat-bar {
-        /* Styles pour la barre de chat, comme la largeur, la hauteur, etc. */
+    .message-bubble {
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: flex-end; /* Aligner les bulles à droite */
+        position: relative; /* Position relative pour positionner les bulles enfants de manière absolue */
+        align-items: flex-end; /* Aligner les bulles au bas du conteneur */
+    }
+
+    .message-bubble.user {
+        justify-content: flex-start; /* Aligner les bulles à gauche pour les messages de l'utilisateur */
+    }
+
+    .message-bubble p {
+        background-color: #ffffff;
+        border: 1px solid #cccccc;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 0;
+        max-width: 80%; /* Limite la largeur des bulles de message */
+        word-wrap: break-word; /* Permettre le retour à la ligne automatique dans les messages longs */
+    }
+
+    /* Style pour la bulle de message */
+    .message-content {
+        position: absolute;
+        bottom: 0;
+        left: 0;
     }
 </style>
 
-<div class="chat-bar-container">
-    <div class="chat-bar">
-        <!-- Affichage des messages -->
-        {#each messages as message}
-            <div>{message.text}</div>
-        {/each}
+<div class="chat-container">
+    <!-- Affichage des messages -->
+    {#each messages as message, index}
+        <div class="message-bubble {message.fromUser ? 'user' : ''}" style="bottom: {index * 60}px;">
+            <p class="message-content">{message.text}</p>
+        </div>
+    {/each}
 
-        <!-- Champ de saisie pour entrer le message -->
-        <input type="text" bind:value={messageInput} placeholder="Entrez votre message...">
-        <!-- Bouton pour envoyer le message -->
-        <button on:click={sendMessage}>Envoyer</button>
-    </div>
+    <!-- Champ de saisie pour entrer le message -->
+    <input type="text" bind:value={messageInput} placeholder="Entrez votre message..." on:keydown={handleKeyDown}>
+    <!-- Bouton pour envoyer le message -->
+    <button on:click={sendMessage}>Envoyer</button>
 </div>
+
