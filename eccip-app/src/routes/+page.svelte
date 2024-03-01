@@ -19,21 +19,9 @@
         <!--
             in here you put the posts
         -->
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>scrollllllllllll boxxxxxxxxxxxxxxxxx</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-        <h1>yoooooooooooooooo</h1>
-
+        <h1>posts inside here</h1>
+        <h1>this is a scroll area</h1>
+        
     </div>
 </div>
 
