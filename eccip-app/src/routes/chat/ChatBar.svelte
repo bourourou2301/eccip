@@ -1,83 +1,132 @@
-<script>
-    /** @type {{ text: string, fromUser: boolean }[]} */
-    let messages = []; // tableau pour stocker les messages
-    /** @type {string} */
-    let messageInput = ""; // variable pour stocker le message entré par l'utilisateur
+<script lang="ts">
+    import { onMount, onDestroy } from 'svelte';
 
-    function sendMessage() {
+    let chatContainer: HTMLElement | null; // Déclaration de chatContainer avec le type explicite HTMLElement | null
+
+    // Utilisation de la fonction `onMount` pour exécuter du code une fois que le composant est monté
+    onMount(() => {
+        // Mettre à jour la barre de défilement pour afficher les nouveaux messages
+        chatContainer = document.querySelector('.chat-container');
+        if (chatContainer) { // Vérifie si chatContainer est défini
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+    });
+
+    // Utilisation de la fonction `onDestroy` pour nettoyer les écouteurs d'événements ou les abonnements lorsque le composant est détruit
+    onDestroy(() => {
+        // Nettoyer les ressources ici si nécessaire
+    });
+
+    /** @type {string[]} */
+    let messages: string[] = []; // tableau pour stocker les messages
+    /** @type {string} */
+    let messageInput: string = ""; // variable pour stocker le message entré par l'utilisateur
+
+    /**
+     * Fonction pour envoyer un message
+     * @returns {void}
+     */
+    function sendMessage(): void {
         if (messageInput.trim() !== "") { // Vérifie si le message n'est pas vide
-            messages = [...messages, { text: messageInput.trim(), fromUser: true }]; // Ajoute le message à la liste des messages
+            messages = [...messages, messageInput.trim()]; // Ajoute le message à la liste des messages
             messageInput = ""; // Réinitialise le champ de saisie
+
+            // Faire défiler jusqu'au bas de la barre de défilement si chatContainer est défini
+            if (chatContainer) {
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
         }
     }
 
-    /** 
- * @param {KeyboardEvent} event 
- */
-function handleKeyDown(event) {
-    if (event.key === "Enter") {
-        sendMessage();
+    /**
+     * Gestionnaire d'événements pour la pression sur la touche "Entrée" dans le champ de saisie
+     * @param {KeyboardEvent} event - Événement de frappe de clavier
+     * @returns {void}
+     */
+    function handleKeyDown(event: KeyboardEvent): void {
+        if (event.key === "Enter") {
+            sendMessage();
+        }
     }
-}
-
 </script>
 
 <style>
-    /* Styles pour la barre de chat */
     .chat-container {
+        position: fixed;
+        bottom: 50px; /* Réduit la hauteur du conteneur du message pour laisser de la place pour le champ de saisie */
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        max-width: 500px; /* ajustez selon vos besoins */
+        max-height: 80%; /* Limite la hauteur de la boîte de chat */
+        overflow-y: auto; /* Ajoute une barre de défilement vertical si nécessaire */
+        background-color: #f0f0f0;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .messages {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .message-bubble {
+        background-color: #e6e6e6;
+        border-radius: 15px;
+        padding: 10px 15px; /* Ajout de rembourrage supplémentaire */
+        margin-bottom: 10px;
+        max-width: calc(100% - 40px); /* Largeur maximale ajustée */
+        display: block; /* Affichage en bloc pour occuper la largeur disponible */
+        word-wrap: break-word; /* Pour revenir à la ligne pour les mots longs */
+    }
+
+    .user {
+        align-self: flex-end;
+    }
+
+    .message-content {
+        margin: 0;
+    }
+
+    .message-input-container {
         position: fixed;
         bottom: 0;
         left: 50%;
         transform: translateX(-50%);
-        width: 100%;
-        max-width: 600px; /* Largeur maximale de la barre de chat */
-        box-sizing: border-box; /* Pour inclure les bordures et le padding dans la largeur */
-        padding: 20px;
-        overflow-y: auto; /* Ajout d'un défilement vertical lorsque les messages dépassent la hauteur */
-        max-height: calc(100vh - 40px); /* Hauteur maximale du chat pour atteindre le haut de la page */
-    }
-
-    .message-bubble {
-        margin-bottom: 10px;
-        display: flex;
-        justify-content: flex-end; /* Aligner les bulles à droite */
-        position: relative; /* Position relative pour positionner les bulles enfants de manière absolue */
-        align-items: flex-end; /* Aligner les bulles au bas du conteneur */
-    }
-
-    .message-bubble.user {
-        justify-content: flex-start; /* Aligner les bulles à gauche pour les messages de l'utilisateur */
-    }
-
-    .message-bubble p {
-        background-color: #ffffff;
-        border: 1px solid #cccccc;
-        border-radius: 10px;
+        width: 80%;
+        max-width: 500px; /* ajustez selon vos besoins */
+        background-color: #f0f0f0;
         padding: 10px;
-        margin: 0;
-        max-width: 80%; /* Limite la largeur des bulles de message */
-        word-wrap: break-word; /* Permettre le retour à la ligne automatique dans les messages longs */
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     }
 
-    /* Style pour la bulle de message */
-    .message-content {
-        position: absolute;
-        bottom: 0;
-        left: 0;
+    .message-input {
+        width: calc(100% - 40px);
+        padding: 5px 10px;
+        border-radius: 8px;
+        border: 1px solid #ccc;
     }
 </style>
 
 <div class="chat-container">
     <!-- Affichage des messages -->
-    {#each messages as message, index}
-        <div class="message-bubble {message.fromUser ? 'user' : ''}" style="bottom: {index * 60}px;">
-            <p class="message-content">{message.text}</p>
-        </div>
-    {/each}
-
-    <!-- Champ de saisie pour entrer le message -->
-    <input type="text" bind:value={messageInput} placeholder="Entrez votre message..." on:keydown={handleKeyDown}>
-    <!-- Bouton pour envoyer le message -->
-    <button on:click={sendMessage}>Envoyer</button>
+    <ul class="messages">
+        {#each messages as message, index}
+            <li class="message-bubble user" style="bottom: {index * 60}px;">
+                <p class="message-content">{message}</p>
+            </li>
+        {/each}
+    </ul>
 </div>
 
+<div class="message-input-container">
+    <!-- Champ de saisie pour entrer le message -->
+    <input type="text" class="message-input" bind:value={messageInput} placeholder="Entrez votre message..." on:keydown={handleKeyDown}>
+    <!-- Bouton pour envoyer le message -->
+    <!-- <button on:click={sendMessage}> -->
+        <!-- <i class="fa fa-paper-plane"></i> -->
+    <!-- </button> -->
+</div>
