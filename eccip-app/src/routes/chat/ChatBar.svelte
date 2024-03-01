@@ -21,6 +21,8 @@
     let messages: string[] = []; // tableau pour stocker les messages
     /** @type {string} */
     let messageInput: string = ""; // variable pour stocker le message entré par l'utilisateur
+    /** @type {string} */
+    let lastMessage: string = ""; // variable pour stocker le dernier message écrit
 
     /**
      * Fonction pour envoyer un message
@@ -28,7 +30,8 @@
      */
     function sendMessage(): void {
         if (messageInput.trim() !== "") { // Vérifie si le message n'est pas vide
-            messages = [...messages, messageInput.trim()]; // Ajoute le message à la liste des messages
+            lastMessage = messageInput.trim(); // Met à jour le dernier message écrit
+            messages = [...messages, lastMessage]; // Ajoute le message à la liste des messages
             messageInput = ""; // Réinitialise le champ de saisie
 
             // Faire défiler jusqu'au bas de la barre de défilement si chatContainer est défini
@@ -47,6 +50,14 @@
         if (event.key === "Enter") {
             sendMessage();
         }
+    }
+
+    /**
+     * Fonction pour revenir au dernier message écrit
+     * @returns {void}
+     */
+    function goToLastMessage(): void {
+        messageInput = lastMessage;
     }
 </script>
 
@@ -130,3 +141,6 @@
         <!-- <i class="fa fa-paper-plane"></i> -->
     <!-- </button> -->
 </div>
+
+<!-- Bouton pour revenir au dernier message écrit -->
+<button class="go-to-last-message-button" on:click={goToLastMessage}>Revenir au dernier message</button>
