@@ -1,11 +1,11 @@
 <script lang="ts">
 import {session} from "$lib/stores/session";
-	import { onMount } from "svelte";
-	import { goto } from "$app/navigation";
-	import { signOut } from "firebase/auth";
-	import firebase from "$lib/firebase";
-	import type { LayoutData } from "./$types";
-    export let data: LayoutData;
+import { onMount } from "svelte";
+import { goto } from "$app/navigation";
+import { signOut } from "firebase/auth";
+import firebase from "$lib/firebase";
+import type { LayoutData } from "./$types";
+export let data: LayoutData;
 
 
 let loading:boolean = true;
@@ -16,9 +16,8 @@ session.subscribe((cur: any) => {
      loggedIn = cur?.loggedIn;
     });
 
-    
-     onMount(async () => {
-        const user: any = await data.getAuthUser();
+    onMount(async () => {
+    const user: any = await data.getAuthUser();
    
      const loggedIn = !!user
      session.update((cur: any) => {
@@ -55,7 +54,6 @@ session.subscribe((cur: any) => {
 {:else if loggedIn}
 	<div>
 		Logged in: {loggedIn}
-        <button on:click="{logout}">Logout</button>
         <div id="navbar-parent">
             <nav class="navbar">
                 <a href="/">Accueil</a>

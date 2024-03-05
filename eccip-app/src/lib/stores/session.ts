@@ -1,18 +1,18 @@
 import { writable, type Writable } from 'svelte/store';
 
 type User = {
- email?: string | null;
- displayName?: string | null;
- photoURL?: string | null;
- uid?: string | null;
- role?: string | null;
+ sEmail: string;
+ sPrenom: string;
+ sNom: string;
+ sPhotoURL?: string | null;
+ sUid: string;
+ sRole: string;
 };
 
 export type SessionState = {
- user: User | null;
- loading?: boolean;
- loggedIn?: boolean;
+ sUser: User;
+ sLoading: boolean;
+ sLoggedIn: boolean;
 };
 
 export const session = <Writable<SessionState>>writable();
-export const user = <Writable<User>>writable();
