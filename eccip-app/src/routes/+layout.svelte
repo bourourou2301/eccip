@@ -19,6 +19,7 @@
             <a href="/chat">Chat</a>
             <a href="/horaire">Horaire</a>
             <a href="/profil">Mon profil</a>
+            <a href="/offreDemploi">Les offres d'emplois</a>
         </nav>
         <button on:click={writeToDatabase} class="btn btn-danger btn-sm">Se déconnecter</button>
     </div>
