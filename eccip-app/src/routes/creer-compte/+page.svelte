@@ -25,19 +25,13 @@ async function handleRegister() {
    session.update((cur: any) => {
     return {
     ...cur,
-    sUser: {
-      sEmail: email,
-      sPrenom: prenom,
-      sNom: nom,
-      sUid: auth.currentUser?.uid,
-      sRole: role,
-    },
+    sUid: auth.currentUser?.uid,
+    sEmail: email,
     sloggedIn: true,
     sloading: false
     };
    });
    goto('/');
-   console.log(session.sUser.sEmail);
   })
   .catch((error) => {
    throw new Error(error);

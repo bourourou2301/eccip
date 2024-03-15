@@ -1,29 +1,31 @@
 <script lang="ts">
     import firebase from '$lib/firebase';
-    import { set, ref } from 'firebase/database';
-
-
-
+    import { set, ref, push, type DatabaseReference } from 'firebase/database';
 
     let db = firebase.database;
-    let id: string;
+    // Generer un id randome ou pas
     let titre: string;
     let domaine: string;
     let localisation: string;
     let salaire: number;
     let heure: number;
+    // uID de la personne qui la mis sur le site
     let proprietaire: string;
+    // array de string des uid des postulants
     let applicants: string[];
 
-
+    
+    const dbRef: DatabaseReference = ref(db, "offres/");
     async function creerOffre() {
-        let dbRef: any = "offres/1";
-        set(ref(db, dbRef+"/titre"), titre);
-        set(ref(db, dbRef+"/domaine"), domaine);
-        set(ref(db, dbRef+"/localisation"), localisation);
-        set(ref(db, dbRef+"/salaire"), salaire);
-        set(ref(db, dbRef+"/heure"), heure);
+        let referencePoste = push(dbRef);
+        set(ref(db, referencePoste.key+"/domaine"), domaine);
+        set(ref(db, referencePoste.key+"/localisation"), localisation);
+        set(ref(db, referencePoste.key+"/salaire"), salaire);
+        set(ref(db, referencePoste.key+"/heure"), heure);
+        
     }
+
+
 
 </script>
 

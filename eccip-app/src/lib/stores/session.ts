@@ -1,16 +1,17 @@
 import { writable, type Writable } from 'svelte/store';
 
-type User = {
- sEmail: string;
- sPrenom: string;
- sNom: string;
- sPhotoURL?: string | null;
- sUid: string;
- sRole: string;
-};
+// type User = {
+//  sEmail: string;
+//  sPrenom: string;
+//  sNom: string;
+//  sPhotoURL?: string | null;
+//  sUid: string;
+//  sRole: string;
+// };
 
 export type SessionState = {
- sUser: User;
+//  sUser: User;
+ sUid: string;
  sLoading: boolean;
  sLoggedIn: boolean;
 };

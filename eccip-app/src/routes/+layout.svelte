@@ -10,10 +10,12 @@ export let data: LayoutData;
 
 let loading:boolean = true;
 let loggedIn:boolean = false;
+let userID: string;
 
 session.subscribe((cur: any) => {   
      loading = cur?.loading;
      loggedIn = cur?.loggedIn;
+     userID = cur?.sUid;
     });
 
     onMount(async () => {
