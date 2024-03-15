@@ -1,0 +1,92 @@
+
+.contenu-page{
+    background-color: aliceblue;
+    margin-left: 120px;
+  
+}
+.bg-haut {
+background-color:rgb(62, 62, 155);
+color: aliceblue;
+}
+/*
+.profile-pic {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+}*/
+
+/*horaire */
+.grille {
+    display: flex;
+    margin-left: 200px; 
+    padding: 20px; 
+}
+
+
+.row {
+    display: flex;
+    width: 100%;
+}
+
+
+.day-header {
+    width: calc(100% / 8);
+    text-align: center;
+    border: 1px solid #ddd;
+}
+.times {
+    margin-top: 20px;
+    width: min-content + 2px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+/*page d'accueil*/
+*{
+    margin: 0;
+}
+.titreZone{
+background-color: aliceblue;
+color:rgb(62, 62, 155);
+text-align: center;
+
+}
+.boxTitre{
+flex-direction: column;
+text-align: right;
+}
+.boxLogo{
+text-align: right;
+margin-right: 20px;
+flex-direction: column;
+margin-bottom: 20px;
+}
+.scroll-areaAccueil{
+max-height: calc(100vh - 240px); 
+overflow-y: auto; 
+background-color: aliceblue;
+color:rgb(62, 62, 155);
+left: 122px;
+position: fixed;
+width: 100%; 
+height:100vh; 
+overflow-y: auto; 
+margin-left: 1px;
+}
+
+.companie {
+text-align: center;
+font-family: 'Courier New', Courier, monospace;
+}
+.description-companie{
+text-align: center;
+font-family: 'Courier New', Courier, monospace;
+}
+.jumbotron{
+text-align: center;
+height: 200px;
+margin-top: 0%;
+    color: aliceblue;
+    background-color: rgb(62, 62, 155);
+    margin-bottom: 0%;
+}

@@ -1,55 +1,52 @@
 
+	<script>
+		let typeUser = ''; // la variable pour afficher le type de page correct selon le type de user
+	</script>
 
-<div class="titrePage">
-	<div class="container-fluid text-center">
-		<h1>Les offres d'emploi</h1>
-	</div>
-</div>
-<body>
-<div>
-	{#if typeuser != 'recruteur'}
-		<header>
-			<h1>Job Offers</h1>
-			<input type="text" id="searchInput" placeholder="Search..." />
-		</header>
-		<main id="jobOffers">
-			<!-- Job offers will be dynamically inserted here -->
-		</main>
-	{:else}
-    <!-- version de la page pour les recruteur-->
-    {/if}
-</div>
-</body>
-<script src="script.js">
-	let typeuser = ''; // la variable pour afficher le type de page correct selon le type de user
-</script>
+
+    <div class="titrePage">
+        <div class="container-fluid text-center">
+            <h1>Les offres d'emploi</h1>
+        </div>
+    </div>
+
+    <div>
+        {#if typeUser != 'recruteur'}
+        <header>
+            <input type="text" id="searchInput" placeholder="Rechercher..." />
+        </header>
+        <main id="jobOffers">
+            <h1> Les offres de jobs ici</h1>
+        </main>
+        {:else}
+        <!-- version de la page pour les recruteur-->
+        {/if}
+    </div>
+
+
 <style>
-	body {
-		font-family: Arial, sans-serif;
-		margin: 0;
-		padding: 0;
+	.titrePage{
+		background-color:rgb(62, 62, 155) ;
+		color: aliceblue;
 	}
-
+	
 	header {
 		background-color: #f0f0f0;
 		padding: 20px;
 		text-align: center;
 	}
 
-	input[type='text'] {
+	#searchInput {
 		padding: 10px;
 		width: 300px;
 		border-radius: 5px;
 		border: 1px solid #ccc;
 	}
-
-	main {
-		padding: 20px;
-	}
-
 	#jobOffers {
+
 		border: 1px solid #ccc;
-		padding: 10px;
+		padding: 20px;
 		margin-bottom: 10px;
+		margin-left: 120px;
 	}
 </style>
