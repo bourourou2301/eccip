@@ -34,7 +34,7 @@ async function handleRegister() {
    goto('/');
   })
   .catch((error) => {
-   throw new Error(error);
+   console.log(error)
   });
 } 
 </script>
