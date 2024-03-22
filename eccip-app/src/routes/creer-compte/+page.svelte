@@ -39,7 +39,7 @@ async function handleRegister() {
 } 
 </script>
 
-<div class="register-form">
+<div class="register-form contenu-page">
     <form on:submit={handleRegister}>
      <h2>Register</h2>
      <input bind:value={email} type="email" placeholder="Email" />
@@ -52,3 +52,4 @@ async function handleRegister() {
      <button type="submit">Register</button>
     </form>
    </div>
+  

@@ -21,6 +21,13 @@
         </div>
     </div>
 </div>
+<div>
+    <!-- Contenu de la page +page -->
+
+
+    <!-- Utilisation de la barre de chat -->
+    <ChatBar />
+</div>
 <style>
     .contenuPage{
         margin-left: 120px;
