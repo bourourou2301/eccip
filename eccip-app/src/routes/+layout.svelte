@@ -15,7 +15,9 @@ let userID: string;
 session.subscribe((cur: any) => {   
      loading = cur?.loading;
      loggedIn = cur?.loggedIn;
-     userID = cur?.sUid;
+     if (loggedIn === true) {
+        userID = cur?.sUid.uid;
+     }
     });
 
     onMount(async () => {
@@ -26,6 +28,7 @@ session.subscribe((cur: any) => {
       loading = false;
       return {
        ...cur,
+       sUid: 
        user,
        loggedIn,
        loading: false
@@ -55,7 +58,7 @@ session.subscribe((cur: any) => {
 	<div>Loading...</div>
 {:else if loggedIn}
 	<div>
-		Logged in: {loggedIn}
+		Logged in: {loggedIn} as {userID}
         <div id="navbar-parent">
             <nav class="navbar">
                 <a href="/">Accueil</a>

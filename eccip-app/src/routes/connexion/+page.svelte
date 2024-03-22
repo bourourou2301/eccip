@@ -18,13 +18,9 @@
        .then((result) => {
         const { user }: UserCredential = result;
         session.set({
-         loggedIn: true,
-         user: {
-          displayName: user?.displayName,
-          email: user?.email,
-          photoURL: user?.photoURL,
-          uid: user?.uid
-         }
+            sUid: user?.uid,
+            sLoading: false,
+            sLoggedIn: true
         });
         goto('/');
        })
