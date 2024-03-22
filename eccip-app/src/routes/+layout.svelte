@@ -55,10 +55,9 @@ session.subscribe((cur: any) => {
 	<div>Loading...</div>
 {:else if loggedIn}
 	<div>
-		Logged in: {loggedIn}
         <div id="navbar-parent">
             <nav class="navbar">
-                <a href="/">Accueil</a>
+                <a href="/accueil   ">Accueil</a>
                 <a href="/chat">Chat</a>
                 <a href="/horaire">Horaire</a>
                 <a href="/a-propos">À propos</a>
