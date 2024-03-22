@@ -90,3 +90,37 @@ margin-top: 0%;
     background-color: rgb(62, 62, 155);
     margin-bottom: 0%;
 }
+/* .recherche{
+    
+} */
+
+.boutonPageOffre{
+    margin-left: 20px;
+    margin-top: 3px;
+}
+header {
+    background-color: #f0f0f0;
+    padding: 20px;
+    margin-left: 35%;
+}
+
+#searchInput {
+    align-items: center;
+    padding: 10px;
+    width: 300px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+#jobOffers {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+}
+/*
+domain
+heures
+localisation
+salaire
+titre
+*/
