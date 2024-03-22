@@ -1,6 +1,6 @@
 <script lang="ts">
     import firebase from '$lib/firebase';
-    import { set, ref, push, type DatabaseReference, off } from 'firebase/database';
+    import { child, get, set, ref, push, type DatabaseReference, off, DataSnapshot } from 'firebase/database';
     import Offre from "$lib/offre";
 
     let db = firebase.database;
@@ -15,9 +15,9 @@
     // array de string des uid des postulants
 
     
-    // const dbRef: DatabaseReference = ref(db, "offres/");
+// const dbRef: DatabaseReference = ref(db, "offres/");
     async function creerOffre() {
-        // let referencePoste = push(dbRef);
+// let referencePoste = push(dbRef);
         // set(ref(db, referencePoste.key+"/domaine"), domaine);
         // set(ref(db, referencePoste.key+"/localisation"), localisation);
         // set(ref(db, referencePoste.key+"/salaire"), salaire);
@@ -26,7 +26,7 @@
         offer.writeOfferToDb();
     }
 
-
+    
 
 </script>
 
@@ -44,4 +44,9 @@
      <input bind:value={heure} type="number" min="0" placeholder="Heures/Semaine" />Poster
      <button type="submit">Créer l'offre</button>
     </form>
+   </div>
+   <div>
+    <button on:click={Offre.readOfferFromDb} type="button">
+        Read from the database
+    </button>
    </div>

@@ -61,7 +61,7 @@ session.subscribe((cur: any) => {
 		Logged in: {loggedIn} as {userID}
         <div id="navbar-parent">
             <nav class="navbar">
-                <a href="/">Accueil</a>
+                <a href="/accueil   ">Accueil</a>
                 <a href="/chat">Chat</a>
                 <a href="/horaire">Horaire</a>
                 <a href="/a-propos">À propos</a>
