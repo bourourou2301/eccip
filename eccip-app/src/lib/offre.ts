@@ -57,11 +57,10 @@ class Offre{
         console.log(referencePoste.parent?.key)
     }
     //faut fix pour pouvoir read avec un id specifique/le dernier generer
-    static readOfferFromDb(){
+    public readOfferFromDb(){
         const dbRef: DatabaseReference = ref(db, "offres/");
         get(child(dbRef, "-NtaIQb0UriehUZZB2LA")).then((snapshot) =>{
             let offer_read = Offre.fromDataSnapshot(snapshot)
-            console.log(offer_read)
             return offer_read;
         })    
     }
