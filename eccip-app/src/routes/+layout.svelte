@@ -1,35 +1,83 @@
-<script>
-    import firebase from '$lib/firebase';
-    import { set, ref } from 'firebase/database';
-    var counter = 0;
-    function writeToDatabase() {
-        const database = firebase.database;
-        const dataToWrite = {
-            TimeAtTimeOfButtonPress : new Date().toLocaleString()
-        };
-    const dbRef = ref(database, 'TimeAtButtonPress/PressNumber'+counter+'/');
-    counter = counter +1;
-    set(dbRef, dataToWrite);
+<script lang="ts">
+import {session} from "$lib/stores/session";
+import { onMount } from "svelte";
+import { goto } from "$app/navigation";
+import { signOut } from "firebase/auth";
+import firebase from "$lib/firebase";
+import type { LayoutData } from "./$types";
+export let data: LayoutData;
+
+
+let loading:boolean = true;
+let loggedIn:boolean = false;
+let userID: string;
+
+session.subscribe((cur: any) => {   
+     loading = cur?.loading;
+     loggedIn = cur?.loggedIn;
+     if (loggedIn === true) {
+        userID = cur?.sUid.uid;
+     }
+    });
+
+    onMount(async () => {
+    const user: any = await data.getAuthUser();
+   
+     const loggedIn = !!user
+     session.update((cur: any) => {
+      loading = false;
+      return {
+       ...cur,
+       sUid: 
+       user,
+       loggedIn,
+       loading: false
+      };
+     });
+   
+     if (loggedIn) {
+      goto('/');
+     }
+     else{
+        goto('/connexion')
+     }
+    });
+    export function logout() {
+        signOut(firebase.auth).then(() =>{
+                goto("/connexion")
+                loggedIn = false;
+        }).catch((error) =>{
+            throw new Error(error);
+        })
     }
 </script>
+    
 
-<div id="navbar-parent">
-        <nav class="navbar">
-            <a href="">Accueil</a>
-            <a href="/offres">Offres</a>
-            <a href="/chat">Chat</a>
-            <a href="">Horaire</a>
-            <a href="">À propos</a>
-        </nav>
-        <div id="profile-pic"></div>
-        <button on:click={writeToDatabase}>Write To Database</button>
-</div>
+
+{#if loading}
+	<div>Loading...</div>
+{:else if loggedIn}
+	<div>
+		Logged in: {loggedIn} as {userID}
+        <div id="navbar-parent">
+            <nav class="navbar">
+                <a href="/">Accueil</a>
+                <a href="/chat">Chat</a>
+                <a href="/horaire">Horaire</a>
+                <a href="/a-propos">À propos</a>
+            </nav>
+            <div id="profile-pic"></div>
+            <button on:click={logout}>Se déconnecter</button>
+        </div>  
+	</div>
+{/if}
+
 <slot></slot>
 
 <style>
 #navbar-parent {
     background-color: rgb(62, 62, 155);
-    width: 150px;
+    width: 100px;
     height: 80vh;
     box-shadow: 10px 10px 10px #5e5454;
     padding: 20px;
@@ -57,7 +105,7 @@
 .navbar a {
     font-family: 'Courier New', Courier, monospace;
     text-align: center;
-        color: rgb(0, 0, 0);
+        color: rgb(255, 255, 255);
     text-decoration: none;
     background-color: transparent;
 }
