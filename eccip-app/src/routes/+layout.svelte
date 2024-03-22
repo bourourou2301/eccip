@@ -16,7 +16,8 @@
 <div id="navbar-parent">
         <nav class="navbar">
             <a href="">Accueil</a>
-            <a href="">Chat</a>
+            <a href="/offres">Offres</a>
+            <a href="/chat">Chat</a>
             <a href="">Horaire</a>
             <a href="">À propos</a>
         </nav>
