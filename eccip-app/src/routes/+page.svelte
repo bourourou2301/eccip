@@ -1,20 +1,26 @@
 <script>
-    import Message from "$lib/message";
-	import { session } from "$lib/stores/session";
-    const message1 = new Message();
+    import '$lib/style.css';
 </script>
 
-<div>
-    <h1 style="text-align: center;">BIENVENUE SUR ECCIP</h1>
-    <a href="/creer-offre">Creer offre</a>
-    <!-- <button on:click={message1.envoyerMessage(session.subscribe())}>Test message</button> -->
-</div>
+    <div class="jumbotron ">
+        <div class="boxTitre">
+        <h1 class=companie>Eccip</h1>
+        <p class=description-companie>We specialize in blablabla</p>
+        <a href="/creer-offre">Creer offre</a>
+        </div>
+        <div class= "boxLogo">
+            <h2 class="logo">logo</h2>
+        </div>
 
-<style>
-    a, button{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
 
-</style>
+    </div>
+    <div class="titreZone"><h1 >Mon fil</h1>
+    </div>
+    
+    <div class ="scroll-areaAccueil">
+        <!--
+            in here you put the posts
+        -->
+        <h1>Les offres d'emplois seront ici</h1>
+        
+    </div>
