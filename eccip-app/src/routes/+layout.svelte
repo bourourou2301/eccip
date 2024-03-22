@@ -1,29 +1,69 @@
-<script>
-    import firebase from '$lib/firebase';
-    import { set, ref } from 'firebase/database';
-    var counter = 0;
-    function writeToDatabase() {
-        const database = firebase.database;
-        const dataToWrite = {
-            TimeAtTimeOfButtonPress : new Date().toLocaleString()
-        };
-    const dbRef = ref(database, 'TimeAtButtonPress/PressNumber'+counter+'/');
-    counter = counter +1;
-    set(dbRef, dataToWrite);
+<script lang="ts">
+import {session} from "$lib/stores/session";
+import { onMount } from "svelte";
+import { goto } from "$app/navigation";
+import { signOut } from "firebase/auth";
+import firebase from "$lib/firebase";
+import type { LayoutData } from "./$types";
+export let data: LayoutData;
+
+
+let loading:boolean = true;
+let loggedIn:boolean = false;
+let userID: string;
+
+session.subscribe((cur: any) => {   
+     loading = cur?.loading;
+     loggedIn = cur?.loggedIn;
+     if (loggedIn === true) {
+        userID = cur?.sUid.uid;
+     }
+    });
+
+    onMount(async () => {
+    const user: any = await data.getAuthUser();
+   
+     const loggedIn = !!user
+     session.update((cur: any) => {
+      loading = false;
+      return {
+       ...cur,
+       sUid: 
+       user,
+       loggedIn,
+       loading: false
+      };
+     });
+   
+     if (loggedIn) {
+      goto('/');
+     }
+     else{
+        goto('/connexion')
+     }
+    });
+    export function logout() {
+        signOut(firebase.auth).then(() =>{
+                goto("/connexion")
+                loggedIn = false;
+        }).catch((error) =>{
+            throw new Error(error);
+        })
     }
 </script>
-    <div id="navbar-parent">
-        <div id="profile-pic"></div>
+
+<div id="navbar-parent">
+    <div id="profile-pic"></div>
         <nav class="navbar">
-            <a href="/">Accueil</a>
-            <a href="/chat">Chat</a>
-            <a href="/horaire">Horaire</a>
-            <a href="/profil">Mon profil</a>
-            <a href="/offreDemploi">Les offres d'emplois</a>
+            <a href="">Accueil</a>
+            <a href="">Chat</a>
+            <a href="">Horaire</a>
+            <a href="">À propos</a>
         </nav>
-        <button on:click={writeToDatabase} class="btn btn-danger btn-sm">Se déconnecter</button>
-    </div>
-    <slot></slot>
+        <div id="profile-pic"></div>
+        <button on:click={writeToDatabase}>Write To Database</button>
+</div>
+<slot></slot>
 
 <style>
     

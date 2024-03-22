@@ -1,4 +1,6 @@
-
+<script>
+    import ChatBar from './ChatBar.svelte'; // Chemin relatif à la position du fichier +page.svelte
+</script>
 <div class="titrePage">
     <div class="container-fluid text-center">
         <h1>Mes Messages</h1>

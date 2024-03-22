@@ -6,6 +6,7 @@
         <div class="boxTitre">
         <h1 class=companie>Eccip</h1>
         <p class=description-companie>We specialize in blablabla</p>
+        <a href="/creer-offre">Creer offre</a>
         </div>
         <div class= "boxLogo">
             <h2 class="logo">logo</h2>
