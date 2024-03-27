@@ -8,7 +8,7 @@
 
 	let db = firebase.database;
 	const dbRef = ref(db, "offres/")
-	let arrayOffre: Offre[] = [];
+	const arrayOffre:Offre[]|null = [];
 
 	get(dbRef).then((snapshot) =>{
     let dataObject = snapshot.val();
