@@ -39,17 +39,21 @@ async function handleRegister() {
 } 
 </script>
 
-<div class="register-form contenu-page">
+<div class="register-form contenu-page col">
     <form on:submit={handleRegister}>
-     <h2>Register</h2>
+      <div class= "titreZone">
+     <h2>S'inscrire</h2>
+    </div>
+    <div class= "col créerProfil ">
      <input bind:value={email} type="email" placeholder="Email" />
-     <input bind:value={password} type="password" placeholder="Password" />
+     <input bind:value={password} type="password" placeholder="mot de passe" />
      <input bind:value={prenom} type="text" placeholder="Prenom" />
      <input bind:value={nom} type="text" placeholder="Nom" />
      <!-- C'est quoi le but de role et value -->
-     <input bind:group={role} type="radio" name="role" value="poster">Poster
-     <input bind:group={role} type="radio" name="role" value="searcher">Searcher
-     <button type="submit">Register</button>
+     <input bind:group={role} type="radio" name="role" value="poster">Encadreur
+     <input bind:group={role} type="radio" name="role" value="searcher">Stagiaire
+     <button type="submit">Se connecter</button>
+    </div>
     </form>
-   </div>
+  </div>
   

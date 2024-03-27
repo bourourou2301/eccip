@@ -117,10 +117,17 @@ header {
     margin-bottom: 10px;
     margin-left: 20px;
 }
-/*
-domain
-heures
-localisation
-salaire
-titre
-*/
+.Login-haut{
+    background-color: rgb(62, 62, 155);
+    color: aliceblue;
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+.login-form{
+ margin-top: 10%;
+ margin-left: 40%;
+ max-height: 100vh;
+}
+.créerProfil{
+    margin-left: 50px;
+}

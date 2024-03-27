@@ -1,4 +1,5 @@
 <script lang="ts">
+    import "$lib/style.css";
 	import { session } from '$lib/stores/session';
      import firebase from '$lib/firebase';
      import {
@@ -29,29 +30,18 @@
        });
      }
 </script>
-<h1> BIENVENUE DANS ECCIP </h1>
-<h3>Veuillez-vous connecter ou créer un compte</h3>
-<div class="login-form">
-    <h1>Login</h1>
-    <form on:submit={loginWithMail}>
-     <input bind:value={email} type="text" placeholder="Email" />
-     <input bind:value={password} type="password" placeholder="Password" />
-     <button type="submit">Login</button>
-    </form>
-   
-    <div>or</div>
-   
-    <div>Don't you have an account? <a href="/creer-compte"> Register</a></div>
-   </div>
+<div class="Login-haut">
+    <h1> BIENVENUE DANS ECCIP </h1>
+    <h3>Veuillez-vous connecter ou créer un compte</h3>
+    <h1>S'inscrire</h1>
+</div>
+        <div class="  login-form">
+            <form on:submit={loginWithMail}>
+            <input bind:value={email} type="text" placeholder="Email" />
+            <input bind:value={password} type="password" placeholder="Mot de passe" />
+            <button type="submit">Se connecter</button>
+            </form>
+            <div>Sinon</div>
+            <div>Vous n'avez pas de compte? <a href="/creer-compte"> S'inscrire</a></div>
+        </div>
 
-<style>    
-    * {
-        margin: 0;
-    }
-    
-    
-    h1, h3 {
-        text-align: center;
-        font-family: 'Courier New', Courier, monospace;
-    }
-    </style>
