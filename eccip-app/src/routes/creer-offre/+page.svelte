@@ -45,8 +45,8 @@
      <button type="submit">Créer l'offre</button>
     </form>
    </div>
-   <div>
+   <!--<div>
     <button on:click={Offre.readOfferFromDb} type="button">
         Read from the database
     </button>
-   </div>
+   </div>-->
