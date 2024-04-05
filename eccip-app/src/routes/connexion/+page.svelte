@@ -23,7 +23,7 @@
             sLoading: false,
             sLoggedIn: true
         });
-        goto('/');
+        goto('/accueil');
        })
        .catch((error) => {
         return error;
