@@ -17,7 +17,7 @@ get(dbRef).then((snapshot) =>{
     });
 })    
 
-function filtrerOffre(arrayOffre: Offre[], motDeRecherche: string){
+ export function filtrerOffre(arrayOffre: Offre[], motDeRecherche: string){
     const arrayOffresMatch : Offre[] = [];
     for (let i=0;i<arrayOffre.length;i++){
            let arrrayObjectAttributes = Object.values(arrayOffre[i])
