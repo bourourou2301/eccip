@@ -1,8 +1,8 @@
 import firebase from '$lib/firebase';
-import { ref, set, type DatabaseReference } from 'firebase/database';
+import { collection, addDoc, doc, setDoc, serverTimestamp, onSnapshot, where, query } from "firebase/firestore"; 
 
-const db = firebase.database;
-const dbRefString: string = 'messages/';
+
+const db = firebase.db;
 
 
 class Message {
@@ -19,14 +19,38 @@ class Message {
         this.uIDRecipient = uIDRecipient;
         this.tempsEnvoyee = tempsEnvoyee;
     }
-// message --> uiduserquiasend --> uiddurecipient/heure/message
 
-    public async envoyerMessage (uIDEnvoyeur: string, uIDRecipient: string, unMessage: string) {
-        let dbRefMessage: DatabaseReference = ref(db, dbRefString + '/' + uIDEnvoyeur + '/' + uIDRecipient);
-        set(dbRefMessage, unMessage);
-    }  
 
-    public async recuprerMessagesEnvoyes(uIDEnvoyeur: string, uIDRecipient: string) {
+    public async creerConversation (uIDEnvoyeur: string, uIDRecipient: string) {
+        const docRef = await addDoc(collection(db, "conversations"), {
+        });
+        console.log("Document written with ID: ", docRef.id);
+        
+        const docData = {
+            cleConversation: docRef.id,
+            utilisateurRecipient: uIDRecipient    
+        };
+        await setDoc(doc(db, "utilsateurs", uIDEnvoyeur), docData);
+    }
+
+
+    public async envoyerMessage (cleConversation: string, unMessage: string, uIDEnvoyeur: string, uIDRecipient:string) {
+        const docData = {
+            message: unMessage,
+            enoyeA: serverTimestamp(),
+            envoyePar: uIDEnvoyeur,
+            recuPar: uIDRecipient
+        }
+        await addDoc(collection(db, "conversations", cleConversation, "messages"), docData)
+    }
+
+
+    public async recuprerMessagesEnvoyes(cleConversation: string, uIDEnvoyeur: string) {
+        const unsub = onSnapshot(collection(db, "conversations", cleConversation, "messages"), (collection) => {
+        collection.forEach((doc) => {
+            console.log('Document changed:', doc.id, '=>', doc.data());
+          });
+        });
 
     }
 

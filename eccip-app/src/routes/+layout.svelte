@@ -5,8 +5,10 @@ import { goto } from "$app/navigation";
 import { signOut } from "firebase/auth";
 import firebase from "$lib/firebase";
 import type { LayoutData } from "./$types";
+import Message from "$lib/message";
 export let data: LayoutData;
 
+const message = new Message();
 
 let loading:boolean = true;
 let loggedIn:boolean = false;
@@ -50,6 +52,18 @@ session.subscribe((cur: any) => {
             throw new Error(error);
         })
     }
+
+    async function envoyerMessage() {
+    await message.envoyerMessage("YuaSzk60KqQOzCKLffOK", "salut", userID, "negQuiARecu");
+  }
+  async function recupererMessage() {
+    await message.recuprerMessagesEnvoyes("YuaSzk60KqQOzCKLffOK", userID);
+  }
+
+  async function creerChat() {
+    await message.creerConversation(userID, "negQuiARecu");
+  }
+
 </script>
 
 <div id="navbar-parent">
@@ -61,6 +75,9 @@ session.subscribe((cur: any) => {
         <a href="/profil">Mon profil</a>
         <a href="/offreDemploi">Les offres d'emplois</a>
     </nav>
+    <button on:click={creerChat}>creer</button>
+    <button on:click={envoyerMessage}>envoyer</button>
+    <button on:click={recupererMessage}>recuperer</button>
     <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
 </div>
 <slot></slot>
