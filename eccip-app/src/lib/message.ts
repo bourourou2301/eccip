@@ -1,8 +1,10 @@
 import firebase from '$lib/firebase';
+
 import { collection, addDoc, doc, setDoc, serverTimestamp, onSnapshot, where, query } from "firebase/firestore"; 
 
 
 const db = firebase.db;
+
 
 
 class Message {
@@ -10,6 +12,7 @@ class Message {
     unMessage: string | undefined;
     uIDRecipient: string | undefined;
     tempsEnvoyee: number | undefined;
+    
 
     // ne sert a rien a par organise le contenu du message un fois 
     //linfo tiree une seul fois de la base de donnees
@@ -19,6 +22,7 @@ class Message {
         this.uIDRecipient = uIDRecipient;
         this.tempsEnvoyee = tempsEnvoyee;
     }
+
 
 
     public async creerConversation (uIDEnvoyeur: string, uIDRecipient: string) {

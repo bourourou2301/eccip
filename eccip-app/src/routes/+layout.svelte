@@ -12,7 +12,7 @@ const message = new Message();
 
 let loading:boolean = true;
 let loggedIn:boolean = false;
-let userID: string;
+export let userID: string;
 
 session.subscribe((cur: any) => {   
      loading = cur?.loading;

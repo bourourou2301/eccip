@@ -1,5 +1,9 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
+  import Message from "$lib/message";
+	import { session } from "$lib/stores/session";
+  
+  const message1 = new Message();
 
   let chatContainer: HTMLElement | null = null;
   let lastMessagePosition = 0; // Store position of the last message
