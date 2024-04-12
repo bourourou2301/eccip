@@ -22,7 +22,6 @@ session.subscribe((cur: any) => {
 
     onMount(async () => {
     const user: any = await data.getAuthUser();
-   
      const loggedIn = !!user
      session.update((cur: any) => {
       loading = false;
@@ -56,7 +55,7 @@ session.subscribe((cur: any) => {
 <div id="navbar-parent">
   <div id="profile-pic"></div>
   <nav class="navbar">
-    <a href="/">Accueil</a>
+    <a href="/accueil">Accueil</a>
     <a href="/chat">Chat</a>
     <a href="/horaire">Horaire</a>
     <a href="/profil">Mon profil</a>

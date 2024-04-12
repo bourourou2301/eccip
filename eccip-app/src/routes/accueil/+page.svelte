@@ -10,7 +10,9 @@
 
 -->
 <script lang="ts">
+	import "$lib/style.css";
 	import Offre from '$lib/offre';
+	
 	import firebase from '$lib/firebase';
 	import { get, child,set, ref, push, type DatabaseReference, DataSnapshot } from 'firebase/database';
 
@@ -34,12 +36,6 @@
 </script>
 
 <div>
-<script>
-    import '$lib/style.css';
-
-    
-</script>
-
     <div class="jumbotron ">
         <div class="boxTitre">
         <h1 class=companie>Eccip</h1>
@@ -48,8 +44,6 @@
         <div class= "boxLogo">
             <h2 class="logo">logo</h2>
         </div>
-
-
     </div>
     <div class="titreZone"><h1 >Mon fil</h1>
  </div>
