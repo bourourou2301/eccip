@@ -33,7 +33,7 @@
 <div class="Login-haut">
     <h1> BIENVENUE DANS ECCIP </h1>
     <h3>Veuillez-vous connecter ou créer un compte</h3>
-    <h1>S'inscrire</h1>
+    <h1>Se connecter</h1>
 </div>
         <div class="  login-form">
             <form on:submit={loginWithMail}>
