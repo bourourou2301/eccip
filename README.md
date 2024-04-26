@@ -4,7 +4,7 @@ Le projet Eccip est une platforme pour la recherche de stage. Elle constitue d'u
 
 
 
-
+<img src="./image.jpg">
 
 
 
