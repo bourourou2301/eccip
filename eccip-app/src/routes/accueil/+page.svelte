@@ -12,7 +12,7 @@
 <script lang="ts">
 	import "$lib/style.css";
 	import Offre from '$lib/offre';
-	
+
 	import firebase from '$lib/firebase';
 	import { get, child,set, ref, push, type DatabaseReference, DataSnapshot } from 'firebase/database';
 
@@ -42,7 +42,7 @@
         <p class=description-companie>We specialize in blablabla</p>
         </div>
         <div class= "boxLogo">
-            <h2 class="logo">logo</h2>
+        <img src="">
         </div>
     </div>
     <div class="titreZone"><h1 >Mon fil</h1>
