@@ -131,3 +131,12 @@ header {
 .créerProfil{
     margin-left: 50px;
 }
+.centered-container {
+    display: flex;
+    justify-content: center; /* Horizontal centering */
+    align-items: center; /* Vertical centering */
+    min-height: 100vh; /* Ensure the container takes up at least the full viewport height */
+}
+.center-Button{
+    margin-left: 20%;
+}

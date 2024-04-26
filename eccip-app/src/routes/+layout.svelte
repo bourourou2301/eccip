@@ -33,9 +33,14 @@ session.subscribe((cur: any) => {
        loading: false
       };
      });
-   
+     const currentUrl = window.location.href;
+        let fromCreerComptePage = currentUrl.includes('/creerCompte');
      if (loggedIn) {
-      goto('/');
+        if (fromCreerComptePage) {
+                goto('/');
+            } else {
+                goto(currentUrl);
+            }
      }
      else{
         goto('/connexion')
