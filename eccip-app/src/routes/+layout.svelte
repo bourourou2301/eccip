@@ -1,4 +1,5 @@
 <script lang="ts">
+import "$lib/style.css";
 import {session} from "$lib/stores/session";
 import { onMount } from "svelte";
 import { goto } from "$app/navigation";
