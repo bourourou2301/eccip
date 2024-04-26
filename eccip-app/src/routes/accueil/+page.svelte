@@ -42,7 +42,7 @@
         <p class=description-companie>We specialize in blablabla</p>
         </div>
         <div class= "boxLogo">
-        <img src="">
+        <img src="logo.jpg">
         </div>
     </div>
     <div class="titreZone"><h1 >Mon fil</h1>
