@@ -3,9 +3,9 @@ import firebase from '$lib/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import { session } from '$lib/stores/session';
-import { set, ref } from 'firebase/database';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
-let db = firebase.database;
+let db = firebase.db;
 let auth = firebase.auth;
 let email: string = '';
 let password: string = '';
@@ -16,12 +16,19 @@ let role: string = '';
 async function handleRegister() {
  await createUserWithEmailAndPassword(auth, email, password)
   .then((result) => {
-  let dbRef:any = "users/"+auth.currentUser?.uid;
+  // let dbRef:any = "users/"+auth.currentUser?.uid;
    const { user } = result;
-   set(ref(db, dbRef+"/email"), user.email);
-   set(ref(db, dbRef+"/prenom"), prenom);
-   set(ref(db, dbRef+"/nom"), nom);
-   set(ref(db, dbRef+"/role"), role);
+
+   const docData = {
+    uid: user.uid,
+    email: user.email,
+    prenom: prenom,
+    nom: nom,
+    role: role
+   };
+   setDoc(doc(db, "utilisateurs", user.uid), docData)
+
+
    session.update((cur: any) => {
     return {
     ...cur,

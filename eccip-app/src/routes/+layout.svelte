@@ -53,16 +53,6 @@ session.subscribe((cur: any) => {
         })
     }
 
-    async function envoyerMessage() {
-    await message.envoyerMessage("YuaSzk60KqQOzCKLffOK", "salut", userID, "negQuiARecu");
-  }
-  async function recupererMessage() {
-    await message.recuprerMessagesEnvoyes("YuaSzk60KqQOzCKLffOK", userID);
-  }
-
-  async function creerChat() {
-    await message.creerConversation(userID, "negQuiARecu");
-  }
 
 </script>
 
@@ -75,10 +65,8 @@ session.subscribe((cur: any) => {
         <a href="/profil">Mon profil</a>
         <a href="/offreDemploi">Les offres d'emplois</a>
     </nav>
-    <button on:click={creerChat}>creer</button>
-    <button on:click={envoyerMessage}>envoyer</button>
-    <button on:click={recupererMessage}>recuperer</button>
     <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
+    <p>user: {userID}</p>
 </div>
 <slot></slot>
 

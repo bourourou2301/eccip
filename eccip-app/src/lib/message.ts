@@ -1,6 +1,8 @@
 import firebase from '$lib/firebase';
 
-import { collection, addDoc, doc, setDoc, serverTimestamp, onSnapshot, where, query } from "firebase/firestore"; 
+import { collection, addDoc, doc, setDoc, serverTimestamp, onSnapshot, getDoc} from "firebase/firestore"; 
+import type { Value } from 'firebase/remote-config';
+import { session } from './stores/session';
 
 
 const db = firebase.db;
@@ -16,26 +18,36 @@ class Message {
 
     // ne sert a rien a par organise le contenu du message un fois 
     //linfo tiree une seul fois de la base de donnees
-    public constructor(uIDEnvoyeur?: string, unMessage?: string, uIDRecipient?: string, tempsEnvoyee?: number) {
-        this.uIDEnvoyeur = uIDEnvoyeur;
-        this.unMessage = unMessage;
-        this.uIDRecipient = uIDRecipient;
-        this.tempsEnvoyee = tempsEnvoyee;
-    }
+    // public constructor(uIDEnvoyeur?: string, unMessage?: string, uIDRecipient?: string, tempsEnvoyee?: number) {
+    //     this.uIDEnvoyeur = uIDEnvoyeur;
+    //     this.unMessage = unMessage;
+    //     this.uIDRecipient = uIDRecipient;
+    //     this.tempsEnvoyee = tempsEnvoyee;
+    // }
 
 
+    public async hasExistingConversation(uIDEnvoyeur: string, uIDRecipient: string): Promise<boolean> {
+        const docRef = doc(collection(db, "utilisateurs", uIDEnvoyeur, "chats"), uIDRecipient);
+        const docSnapshot = await getDoc(docRef);
+        return docSnapshot.exists();
+      }
 
-    public async creerConversation (uIDEnvoyeur: string, uIDRecipient: string) {
-        const docRef = await addDoc(collection(db, "conversations"), {
-        });
-        console.log("Document written with ID: ", docRef.id);
-        
-        const docData = {
-            cleConversation: docRef.id,
-            utilisateurRecipient: uIDRecipient    
-        };
-        await setDoc(doc(db, "utilsateurs", uIDEnvoyeur), docData);
-    }
+      
+    public async creerConversation (uIDEnvoyeur: string, uIDRecipient: string, nomComplet: string) {
+        const hasConversation = await this.hasExistingConversation(uIDEnvoyeur, uIDRecipient);
+        if (!hasConversation) {
+            console.log("nique ta mere la pute");
+            const docRef = await addDoc(collection(db, "conversations"), {});
+            const docData = {
+                cleConversation: docRef.id,
+                utilisateurRecipient: uIDRecipient,
+                nomComplet: nomComplet 
+            };
+            await addDoc(collection(db, "utilisateurs", uIDEnvoyeur, "chats"), docData);
+        } else {
+          console.log("Vous avez déjà une conversation avec cet utilisateur.");
+        }
+      }
 
 
     public async envoyerMessage (cleConversation: string, unMessage: string, uIDEnvoyeur: string, uIDRecipient:string) {
@@ -49,14 +61,24 @@ class Message {
     }
 
 
-    public async recuprerMessagesEnvoyes(cleConversation: string, uIDEnvoyeur: string) {
-        const unsub = onSnapshot(collection(db, "conversations", cleConversation, "messages"), (collection) => {
-        collection.forEach((doc) => {
-            console.log('Document changed:', doc.id, '=>', doc.data());
-          });
-        });
 
-    }
+    // public async recuprerMessagesEnvoyes(cleConversation: string, uIDEnvoyeur: string) {
+    //     session.subscribe((cur : any) => {
+    //         let uid = cur.sUid.uid;
+    //         const unsub = onSnapshot(collection(db, "conversations", cleConversation, "messages"), (collection) => {
+    //             collection.forEach((doc) => {
+    //                 if (doc.get("envoyePar") === uid) {
+    //                   listeMessages.set(doc.get("message"), true);
+    //                   console.log("if 1");
+    //                   console.log(listeMessages);
+    //                 } else {
+    //                   listeMessages.set(doc.get("message"), false)
+    //                   console.log("if 1");
+    //                 }
+    //             });
+    //         });
+    //     });
+    // }
 
 }
 export default(Message);
