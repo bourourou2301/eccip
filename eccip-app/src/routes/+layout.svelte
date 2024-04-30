@@ -6,12 +6,14 @@ import { goto } from "$app/navigation";
 import { signOut } from "firebase/auth";
 import firebase from "$lib/firebase";
 import type { LayoutData } from "./$types";
+import Message from "$lib/message";
 export let data: LayoutData;
 
+const message = new Message();
 
 let loading:boolean = true;
 let loggedIn:boolean = false;
-let userID: string;
+export let userID: string;
 
 session.subscribe((cur: any) => {   
      loading = cur?.loading;
@@ -55,19 +57,22 @@ session.subscribe((cur: any) => {
             throw new Error(error);
         })
     }
+
+
 </script>
 
 {#if loggedIn}
 <div id="navbar-parent">
-  <div id="profile-pic"></div>
-  <nav class="navbar">
-    <a href="/accueil">Accueil</a>
-    <a href="/chat">Chat</a>
-    <a href="/horaire">Horaire</a>
-    <a href="/profil">Mon profil</a>
-    <a href="/offreDemploi">Les offres d'emplois</a>
-  </nav>
-  <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
+    <div id="profile-pic"></div>
+    <nav class="navbar">
+        <a href="/">Accueil</a>
+        <a href="/chat">Chat</a>
+        <a href="/horaire">Horaire</a>
+        <a href="/profil">Mon profil</a>
+        <a href="/offreDemploi">Les offres d'emplois</a>
+    </nav>
+    <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
+    <p>user: {userID}</p>
 </div>
 {/if}
 
