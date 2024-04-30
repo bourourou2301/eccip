@@ -1,8 +1,7 @@
 
 	<script>
-		let typeUser = ''; // la variable pour afficher le type de page correct selon le type de user
-		function pageCréationOffre() { window.location.href = 'offreDemploi/CreerOffre'; }
 		import "$lib/style.css";
+		function pageCréationOffre() { window.location.href = 'offreDemploi/CreerOffre'; }
 	</script>
 
 

@@ -4,6 +4,7 @@ type SessionState = {
  sUid: string | undefined;
  sLoading: boolean | undefined;
  sLoggedIn: boolean | undefined;
+ 
 };
 
 export let session: Writable<SessionState> = writable({

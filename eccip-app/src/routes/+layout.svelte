@@ -1,4 +1,5 @@
 <script lang="ts">
+import "$lib/style.css";
 import {session} from "$lib/stores/session";
 import { onMount } from "svelte";
 import { goto } from "$app/navigation";
@@ -24,7 +25,6 @@ session.subscribe((cur: any) => {
 
     onMount(async () => {
     const user: any = await data.getAuthUser();
-   
      const loggedIn = !!user
      session.update((cur: any) => {
       loading = false;
@@ -36,9 +36,14 @@ session.subscribe((cur: any) => {
        loading: false
       };
      });
-   
+     const currentUrl = window.location.href;
+        let fromCreerComptePage = currentUrl.includes('/creerCompte');
      if (loggedIn) {
-      goto('/');
+        if (fromCreerComptePage) {
+                goto('/');
+            } else {
+                goto(currentUrl);
+            }
      }
      else{
         goto('/connexion')
@@ -56,6 +61,7 @@ session.subscribe((cur: any) => {
 
 </script>
 
+{#if loggedIn}
 <div id="navbar-parent">
     <div id="profile-pic"></div>
     <nav class="navbar">
@@ -68,6 +74,8 @@ session.subscribe((cur: any) => {
     <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
     <p>user: {userID}</p>
 </div>
+{/if}
+
 <slot></slot>
 
 <style>
