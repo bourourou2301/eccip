@@ -1,9 +1,10 @@
 <script lang="ts">
     import firebase from '$lib/firebase';
     import {session} from "$lib/stores/session";
-    import { collection, onSnapshot} from "firebase/firestore"; 
+    import { collection, onSnapshot, doc, getDoc} from "firebase/firestore"; 
     import ChatBar from './ChatBar.svelte'; // Chemin relatif à la position du fichier +page.svelte
     import Message from '$lib/message';
+	import { onMount } from 'svelte';
     
     const db = firebase.db;
 
@@ -22,12 +23,14 @@
     let listeMessages: Map<string, boolean> = new Map();
     let listeUtilisateursTextees: string[] = []; 
 
-
-    session.subscribe((cur: any) => {
-        uid = cur?.sUid.uid;
-        obtenirAnciensChats();
-        obtenirListeUtilisateurs();
-    });
+    onMount(() => {
+        session.subscribe(async (cur: any) => {
+            uid = cur?.sUid.uid;
+            obtenirAnciensChats();
+            obtenirListeUtilisateurs();
+        });
+    })
+    
 
     async function continuerConvo(event: MouseEvent) {
         uidRecipient = (event.target as HTMLButtonElement).value;
@@ -40,6 +43,10 @@
         nomChoisi = (event.target as HTMLButtonElement).value;
         uidRecipientChoisi = (event.target as HTMLButtonElement).name;
         message.creerConversation(uid, uidRecipientChoisi, nomChoisi);
+        // const recipientDoc = await getDoc(doc(db, "utilisateurs", uidRecipientChoisi));
+        // listeUtilisateurs.set(uidRecipientChoisi, recipientDoc.get("prenom") + " " + recipientDoc.get("nom"));
+        obtenirAnciensChats();
+        obtenirListeUtilisateurs();
     }
 
     async function recuprerMessagesEnvoyes() {
@@ -57,14 +64,22 @@
         });
     }
 
-
+//pk ca ecrit undefined kan tu load pour la premiere fois
     async function obtenirAnciensChats() {
+        console.log("0");
         const unsub = onSnapshot(collection(db, "utilisateurs", uid, "chats"), (collection) => {
-            collection.forEach((doc) => {
+            console.log("1");
+            if(collection.empty){
+                console.log("bay vide");
+            } else {
+                collection.forEach((doc) => {
                 listeRecipient.set(doc.get("nomComplet") , doc.get("cleConversation"));
                 listeUtilisateursTextees.push(doc.get("utilisateurRecipient"));
+                console.log("2");
             });
             isSnapshotLoaded = true;
+            }
+
         });
     }
 
@@ -76,7 +91,7 @@
                 } else {
                     listeUtilisateursTextees.forEach(element => {
                         if(element === doc.get("uid")) {
-                            console.log("Vous avez deja un convo avec ce gars");
+                            console.log("Vous avez deja un convo avec " + element);
                         } else {
                             listeUtilisateurs.set(doc.get("uid"), doc.get("prenom") + " " + doc.get("nom"));
                         }

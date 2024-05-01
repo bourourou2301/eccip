@@ -126,10 +126,6 @@
 
 
 
-
-
-
-
 <style>
   .chat-container {
     position: fixed;
@@ -192,7 +188,6 @@
 
   .go-to-last-message-button {
     display: none; /* Hide the button by default */
-  
-
   }
+  
 </style>
