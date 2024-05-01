@@ -13,6 +13,7 @@
     let listeRecipient: Map<string, string> = new Map;
     let isSnapshotLoaded: boolean = false;
     let uid: string;
+    let monNom: string;
     let valeurCle: string;
     let uidRecipient: string;
     let uidRecipientChoisi: string;
@@ -23,11 +24,14 @@
     let listeMessages: Map<string, boolean> = new Map();
     let listeUtilisateursTextees: string[] = []; 
 
-    onMount(() => {
+    onMount(async () => {
         session.subscribe(async (cur: any) => {
             uid = cur?.sUid.uid;
-            obtenirAnciensChats();
-            obtenirListeUtilisateurs();
+            const unsub = onSnapshot(doc(db, "utilisateurs", uid), (doc) => {
+                monNom = doc.get("prenom") + " " + doc.get("nom");
+            });
+            await obtenirAnciensChats();
+            await obtenirListeUtilisateurs();
         });
     })
     
@@ -42,11 +46,7 @@
     async function creerConvo(event: MouseEvent) {
         nomChoisi = (event.target as HTMLButtonElement).value;
         uidRecipientChoisi = (event.target as HTMLButtonElement).name;
-        message.creerConversation(uid, uidRecipientChoisi, nomChoisi);
-        // const recipientDoc = await getDoc(doc(db, "utilisateurs", uidRecipientChoisi));
-        // listeUtilisateurs.set(uidRecipientChoisi, recipientDoc.get("prenom") + " " + recipientDoc.get("nom"));
-        obtenirAnciensChats();
-        obtenirListeUtilisateurs();
+        message.creerConversation(uid, uidRecipientChoisi, nomChoisi, monNom);
     }
 
     async function recuprerMessagesEnvoyes() {
@@ -54,34 +54,27 @@
             collection.forEach((doc) => {
                 if (doc.get("envoyePar") === uid) {
                   listeMessages.set(doc.get("message"), true);
-                  console.log("if 1");
-                  console.log(listeMessages);
                 } else {
                   listeMessages.set(doc.get("message"), false)
-                  console.log("if 1");
                 }
             });
         });
     }
 
 //pk ca ecrit undefined kan tu load pour la premiere fois
-    async function obtenirAnciensChats() {
-        console.log("0");
-        const unsub = onSnapshot(collection(db, "utilisateurs", uid, "chats"), (collection) => {
-            console.log("1");
-            if(collection.empty){
-                console.log("bay vide");
-            } else {
-                collection.forEach((doc) => {
-                listeRecipient.set(doc.get("nomComplet") , doc.get("cleConversation"));
+async function obtenirAnciensChats() {
+    const unsub = onSnapshot(collection(db, "utilisateurs", uid, "chats"), (collection) => {
+        collection.forEach((doc) => {
+            let isDocumentEmpty: boolean = Object.keys(doc.data() || {}).length === 0;
+            console.log(isDocumentEmpty);
+            if (!isDocumentEmpty) {
+                listeRecipient.set(doc.get("nomComplet"), doc.get("cleConversation"));
                 listeUtilisateursTextees.push(doc.get("utilisateurRecipient"));
-                console.log("2");
-            });
-            isSnapshotLoaded = true;
             }
-
         });
-    }
+        isSnapshotLoaded = true;
+    });
+}
 
     async function obtenirListeUtilisateurs() {
         const unsub = onSnapshot(collection(db, "utilisateurs"), (collection) => {
@@ -89,13 +82,18 @@
                 if(uid === doc.get("uid")){
                     console.log("Tu peux pas t'envoyer des messages a toi meme")
                 } else {
-                    listeUtilisateursTextees.forEach(element => {
-                        if(element === doc.get("uid")) {
-                            console.log("Vous avez deja un convo avec " + element);
-                        } else {
-                            listeUtilisateurs.set(doc.get("uid"), doc.get("prenom") + " " + doc.get("nom"));
-                        }
-                    });
+                    if(listeUtilisateursTextees.length !== 0){
+                        listeUtilisateursTextees.forEach(element => {
+                            if(element === doc.get("uid")) {
+                                console.log("Vous avez deja un convo avec " + element);
+                            } else {
+                                listeUtilisateurs.set(doc.get("uid"), doc.get("prenom") + " " + doc.get("nom"));
+                            }
+                        });
+                    } else {
+                        listeUtilisateurs.set(doc.get("uid"), doc.get("prenom") + " " + doc.get("nom"));
+                    }
+                    
                 }
             });
         });

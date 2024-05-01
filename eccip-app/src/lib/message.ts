@@ -33,18 +33,24 @@ class Message {
       }
 
       
-    public async creerConversation (uIDEnvoyeur: string, uIDRecipient: string, nomComplet: string) {
+    public async creerConversation (uIDEnvoyeur: string, uIDRecipient: string, nomComplet: string, nomEnvoyeur: string) {
         const hasConversation = await this.hasExistingConversation(uIDEnvoyeur, uIDRecipient);
         if (!hasConversation) {
             console.log("nique ta mere la pute");
             const docRef = await addDoc(collection(db, "conversations"), {});
-            const docData = {
+            const docData1 = {
                 cleConversation: docRef.id,
                 utilisateurRecipient: uIDRecipient,
                 nomComplet: nomComplet 
             };
-            await addDoc(collection(db, "utilisateurs", uIDEnvoyeur, "chats"), docData);
-        } else {
+            await addDoc(collection(db, "utilisateurs", uIDEnvoyeur, "chats"), docData1);
+            const docData2 = {
+              cleConversation: docRef.id,
+              utilisateurRecipient: uIDRecipient,
+              nomComplet: nomEnvoyeur 
+            };
+            await addDoc(collection(db, "utilisateurs", uIDRecipient, "chats"), docData2);
+          } else {
           console.log("Vous avez déjà une conversation avec cet utilisateur.");
         }
       }
