@@ -28,7 +28,8 @@ async function handleRegister() {
     role: role
    };
    setDoc(doc(db, "utilisateurs", user.uid), docData)
-
+   addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
+// la premiere fois que tu te connecte, sa te redirige vers la page d'accueil mais sans reellement te connecter
 
    session.update((cur: any) => {
     return {
