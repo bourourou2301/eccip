@@ -46,7 +46,7 @@ class Message {
             await addDoc(collection(db, "utilisateurs", uIDEnvoyeur, "chats"), docData1);
             const docData2 = {
               cleConversation: docRef.id,
-              utilisateurRecipient: uIDRecipient,
+              utilisateurRecipient: uIDEnvoyeur,
               nomComplet: nomEnvoyeur 
             };
             await addDoc(collection(db, "utilisateurs", uIDRecipient, "chats"), docData2);

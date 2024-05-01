@@ -66,13 +66,15 @@ async function obtenirAnciensChats() {
     const unsub = onSnapshot(collection(db, "utilisateurs", uid, "chats"), (collection) => {
         collection.forEach((doc) => {
             let isDocumentEmpty: boolean = Object.keys(doc.data() || {}).length === 0;
-            console.log(isDocumentEmpty);
             if (!isDocumentEmpty) {
                 listeRecipient.set(doc.get("nomComplet"), doc.get("cleConversation"));
                 listeUtilisateursTextees.push(doc.get("utilisateurRecipient"));
             }
         });
         isSnapshotLoaded = true;
+        listeUtilisateursTextees.forEach(element => {
+            console.log("neg txt: " + element);
+        });
     });
 }
 
