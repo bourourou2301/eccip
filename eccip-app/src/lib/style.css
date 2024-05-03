@@ -67,20 +67,19 @@ background-size: contain;
 width: 150px; 
 height: 150px; 
 margin-top: 50px;
-margin-left: auto; 
 position: absolute; 
 top: 0; 
 right: 0; 
 z-index: 1;
 }
 .scroll-areaAccueil{
-min-width: 100vh;
-max-height: calc(100vh); 
+min-width: 75vh;
+max-height: calc(65vh); 
 overflow-y: auto; 
 color:rgb(62, 62, 155);
-left: 122px;
+left: 150px;
 position: fixed;
-height:100vh; 
+height:60vh; 
 overflow-y: auto; 
 margin-left: 1px;
 }
@@ -106,8 +105,12 @@ margin-top: 0%;
 } */
 
 .boutonPageOffre{
-    margin-left: 20px;
-    margin-top: 3px;
+    margin-left: 30px;
+    margin-top: 22px;
+}
+.accueiloffre{
+    margin-left: 95px;
+
 }
 header {
     background-color: #f0f0f0;

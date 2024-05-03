@@ -13,6 +13,7 @@
          let bio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
          let tagEmploi = "";
          let localisation = "";
+         let cv = "";
 
          get(child(dbRef, firebase.auth.currentUser!.uid)).then((snapshot) =>{
              prenom = snapshot.val().prenom;

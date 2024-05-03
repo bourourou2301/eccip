@@ -17,7 +17,7 @@
 
     
 // const dbRef: DatabaseReference = ref(db, "offres/");
-    async function creerOffre() {
+    export async function creerOffre() {
 // let referencePoste = push(dbRef);
         // set(ref(db, referencePoste.key+"/domaine"), domaine);
         // set(ref(db, referencePoste.key+"/localisation"), localisation);

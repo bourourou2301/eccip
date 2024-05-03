@@ -185,9 +185,5 @@
     border-radius: 8px;
     border: 1px solid #ccc;
   }
-
-  .go-to-last-message-button {
-    display: none; /* Hide the button by default */
-  }
   
 </style>
