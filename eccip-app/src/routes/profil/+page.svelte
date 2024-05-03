@@ -1,13 +1,27 @@
-<script>
+<script lang="ts">
 	import '$lib/style.css';
-    //  in this I gave random values but when db is connected you can import all of these
-        let prenom = "John Doe";
+    import firebase from '$lib/firebase';
+    import {ref, get, child} from "firebase/database"
+        const db = firebase.database;
+        let dbRef = ref(db, "users/")
+        
+        
+        let prenom = "prenom"
         let nom = "Doe";
         let typeUser = "";
         let email = "john@example.com";
          let bio = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.";
          let tagEmploi = "";
          let localisation = "";
+
+         get(child(dbRef, firebase.auth.currentUser!.uid)).then((snapshot) =>{
+             prenom = snapshot.val().prenom;
+             nom = snapshot.val().nom;
+             typeUser = snapshot.val().role;
+             email = snapshot.val().email;
+             //add other things to get from db as it goes
+        })
+
          function modifierProfil() { window.location.href = 'profil/modification'; }
      </script>
      

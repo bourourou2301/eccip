@@ -1,16 +1,27 @@
-<script>
+<script lang="ts">
 	//  in this I gave random values but when db is connected you can import all of these
-  import "$lib/style.css";
-	let prenom = 'John Doe';
-	let prenomTempo = prenom;
+  	import "$lib/style.css";
+  	import firebase from '$lib/firebase';
+	import {ref, get, set, child} from "firebase/database"
 
-	let nom = 'Doe';
+	const db = firebase.database;
+    let dbRef = ref(db, "users/")
+	
+	let prenom;
+	let nom;
+	let typeUser;
+	let email;
+	get(child(dbRef, firebase.auth.currentUser!.uid)).then((snapshot) =>{
+             prenom = snapshot.val().prenom;
+             nom = snapshot.val().nom;
+             typeUser = snapshot.val().role;
+             email = snapshot.val().email;
+             //add other things to get from db as it goes
+        })
+
+	let prenomTempo = prenom;	
 	let nomTempo = nom;
-
-	let typeUser = '';
 	let typeUserTempo = typeUser;
-
-	let email = 'john@example.com';
 	let emailTempo = email;
 
 	let bio =
@@ -28,36 +39,20 @@
 	let confirmerMDP = '';
 	let memeMDP = true;
 	function changementMotDePasse() {
-		if (nouveauMDP === confirmerMDP) {
-			if (nouveauMDP == '') {
-				motDePasse = motDePasse;
-				memeMDP = true;
-			} else {
-				motDePasse = nouveauMDP;
-				memeMDP = true;
-			}
-		} else {
-			if (confirmerMDP == '') {
-				motDePasse = motDePasse;
-				memeMDP = false;
-			} else {
-				motDePasse = motDePasse;
-				memeMDP = false;
-			}
-		}
+		memeMDP = false;
+		//make a different button for that, its too fucked to make it in the same
 	}
 	function handleSubmit() {
-		/*
-      here send all info to the db
-      */
-		typeUser = typeUserTempo;
-		prenom = prenomTempo;
-		nom = nomTempo;
-		typeUser = typeUserTempo;
-		email = emailTempo;
-		bio = bioTempo;
-		tagEmploi = tagEmploiTempo;
-		localisation = localisationTempo;
+		set(ref(db, "users/"+firebase.auth.currentUser?.uid),{
+			prenom : prenomTempo,
+			nom : nomTempo,
+			role : typeUserTempo,
+			email : emailTempo,
+			bio : bioTempo,
+			tagEmploi : tagEmploiTempo,
+			localisation : localisationTempo
+		})
+		
 	}
   
 </script>

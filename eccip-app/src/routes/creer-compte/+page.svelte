@@ -66,8 +66,7 @@ async function handleRegister() {
      <input bind:group={role} type="radio" name="role" value="poster">Encadreur
      <p></p>
      <input bind:group={role} type="radio" name="role" value="searcher">Stagiaire
-     <p></p>
-     <button class="center-Button"type="submit">Se connecter</button>
+     <button type="submit">S'inscrire!</button>
     </div>
 
     </form>
