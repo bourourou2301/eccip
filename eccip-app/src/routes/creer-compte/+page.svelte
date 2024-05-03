@@ -15,14 +15,9 @@ let role: string = '';
 let bonMDP:boolean= true;
 
 async function handleRegister() {
-
-  // Créer un nouveau compte
  await createUserWithEmailAndPassword(auth, email, password)
   .then((result) => {
   // let dbRef:any = "users/"+auth.currentUser?.uid;
-
-  // Stock les informations de l'utilisateur dans la base de données  
-  let dbRef:any = "users/"+auth.currentUser?.uid;
    const { user } = result;
 
    const docData = {
@@ -45,8 +40,6 @@ async function handleRegister() {
     sloading: false
     };
    });
-
-   // Amène l'utilisateur dans la page d'acceuil
    goto('/');
   })
   .catch((error) => {

@@ -64,8 +64,5 @@ class Offre{
             return offer_read;
         })    
     }
-    public filtrerOffre(motDeRecherche: string){
-        
-    }
 }
 export default Offre;
