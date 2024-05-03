@@ -13,9 +13,15 @@ let prenom: string = '';
 let nom: string = '';
 let role: string = '';
 
+// Gère le processus d'inscription d'un utilisateur
+
 async function handleRegister() {
+
+  // Créer un nouveau compte
  await createUserWithEmailAndPassword(auth, email, password)
   .then((result) => {
+
+  // Stock les informations de l'utilisateur dans la base de données  
   let dbRef:any = "users/"+auth.currentUser?.uid;
    const { user } = result;
    set(ref(db, dbRef+"/email"), user.email);
@@ -31,6 +37,8 @@ async function handleRegister() {
     sloading: false
     };
    });
+
+   // Amène l'utilisateur dans la page d'acceuil
    goto('/');
   })
   .catch((error) => {
@@ -46,7 +54,6 @@ async function handleRegister() {
      <input bind:value={password} type="password" placeholder="Password" />
      <input bind:value={prenom} type="text" placeholder="Prenom" />
      <input bind:value={nom} type="text" placeholder="Nom" />
-     <!-- C'est quoi le but de role et value -->
      <input bind:group={role} type="radio" name="role" value="poster">Poster
      <input bind:group={role} type="radio" name="role" value="searcher">Searcher
      <button type="submit">Register</button>

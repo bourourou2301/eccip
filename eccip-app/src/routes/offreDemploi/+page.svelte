@@ -10,25 +10,25 @@
 	
 		let db = firebase.database;
 		const dbRef = ref(db, "offres/")
-		let arrayOffre: Offre[] = new Array(6);
-		onMount(()=> {
-			get(dbRef).then((snapshot) =>{
-			// let dataObject = snapshot.val();	
-			snapshot.forEach((val) => {
-				arrayOffre.forEach(element => {
-				let titre: string = val.child("titre").val();
-				let domaine: string = val.child("domaine").val();
-				let location: string = val.child("location").val();
-				let salaire: number = val.child("salaire").val();
-				let heures: number = val.child("heures").val();
-				arrayOffre.push(new Offre(titre, domaine, location, salaire, heures));
-			});
-			});
-		});
-		});
 		
-	
-	</script>
+let arrayOffre: Offre[] = [];
+let isOffersLoaded = false; // Flag to track data loading
+
+onMount(() => {
+  get(dbRef).then((snapshot) => {
+	snapshot.forEach((val) => {
+	  let titre = val.child("titre").val();
+	  let domaine = val.child("domaine").val();
+	  let location = val.child("location").val();
+	  let salaire = val.child("salaire").val();
+	  let heures = val.child("heures").val();
+
+	  arrayOffre.push(new Offre(titre, domaine, location, salaire, heures));
+	});
+	isOffersLoaded = true; // Set flag to true after data is loaded
+  });
+});
+</script>
 	
 	<div class="bg-haut">
 		<div class="container-fluid text-center">
@@ -46,17 +46,22 @@
 		</header>
 	  
 		<div class="offer-box">
-		  <ul id="jobOffers">
-			{#each arrayOffre as offre}
-			  <li class="job-item">
-				<h2>{offre.titre}</h2>
-				<p>{offre.domaine} - {offre.location}</p>
-				<p>Salaire: {offre.salaire}</p>
-				<p>Heures: {offre.heures}</p>
-			  </li>
-			{/each}
-		  </ul>
-		</div>
+			<ul id="jobOffers">
+			  {#if isOffersLoaded}
+				{#each arrayOffre as offre}
+				  <li class="job-item">
+					<h2>{offre.titre}</h2>
+					<p>Domaine: {offre.domaine} </p>
+					<p>Lieu: {offre.location} </p>
+					<p>Salaire: {offre.salaire} $ par h</p>
+					<p>Heures: {offre.heures} h</p>
+				  </li>
+				{/each}
+			  {:else}
+				<p>Chargement des offres en cours...</p>
+			  {/if}
+			</ul>
+		  </div>
 	  </div>
 	
 	
@@ -69,7 +74,8 @@
 			  }
 			
 			  .job-item {
-				border-bottom: 1px solid #ddd;
-				padding: 10px;
-			  }
+				border: 1px solid #ddd; /* Solid border for all sides */
+				padding: 10px; /* Inner padding */
+				margin-bottom: 10px; /* Space between boxes */
+}
 	  </style>
