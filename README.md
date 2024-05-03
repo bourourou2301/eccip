@@ -9,7 +9,8 @@ Le projet Eccip est une platforme pour la recherche de stage. Elle constitue d'u
 
 
 # Comment lancer le projet
--Vérifier que Npm est installé sur le pc
+- Cloner le repository avec la commande git clone git@github.com:bourourou2301/eccip.git
+- Vérifier que Npm est installé sur le pc
 - Ouvrir le projet sur un IDE (VS Code a été utilisé pour coder le projet)
 
 - Lancer un terminal à partir de l'IDE
@@ -37,15 +38,15 @@ Le projet Eccip est une platforme pour la recherche de stage. Elle constitue d'u
 
 
 ## Chats
--La page de clavardage affichera les derniers chats qu'un utilisateur a effecté. De plus cette page une fois un chat sélectionné, permettra d'envoyer des message entre les différents utilisateurs de la plateforme.
+- La page de clavardage affichera les derniers chats qu'un utilisateur a effecté. De plus cette page une fois un chat sélectionné, permettra d'envoyer des message entre les différents utilisateurs de la plateforme.
 Cette technique de communication permettra au encadreur de transmettre des informations à leurs stagiaires et vis-versa.
 
 
 ## Rapport de stage
--La page du rapport de stage est un document dans lequel le stagiare pourra remplir des informations sur son stage et le transmettre à son encadreur. Cela permettra de garder l'encadreur à jour sur le stage de son stagiaire.
+- La page du rapport de stage est un document dans lequel le stagiare pourra remplir des informations sur son stage et le transmettre à son encadreur. Cela permettra de garder l'encadreur à jour sur le stage de son stagiaire.
 
 ## Les offres 
--La page d'offre permet de rechercher parmi toutes les offres de stage disponibles. De plus, la page d'offre possède l'option de créer des nouvelles offres de stage.
+- La page d'offre permet de rechercher parmi toutes les offres de stage disponibles. De plus, la page d'offre possède l'option de créer des nouvelles offres de stage.
 
 ## Profil
 - La page de profil permet d'oberserver les informations sur son profil, ainsi qu'atteindre la page de modification du profil. Sur cette page, on peut modifier toutes les informations du profil.
