@@ -28,6 +28,7 @@
 		})
 		for(let i = 0; i < offresArray.length; i++){
 		console.log(offresArray[i])
+		//make it show in webapp
 	}
 	isShowFeed = true;
 	})

@@ -52,7 +52,7 @@ async function handleRegister() {
      <!-- C'est quoi le but de role et value -->
      <input bind:group={role} type="radio" name="role" value="poster">Encadreur
      <input bind:group={role} type="radio" name="role" value="searcher">Stagiaire
-     <button type="submit">Se connecter</button>
+     <button type="submit">S'inscrire!</button>
     </div>
     </form>
   </div>
