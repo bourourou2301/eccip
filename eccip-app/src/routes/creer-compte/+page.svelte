@@ -3,25 +3,34 @@ import firebase from '$lib/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import { session } from '$lib/stores/session';
-import { set, ref } from 'firebase/database';
+import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
-let db = firebase.database;
+let db = firebase.db;
 let auth = firebase.auth;
 let email: string = '';
 let password: string = '';
 let prenom: string = '';
 let nom: string = '';
 let role: string = '';
+let bonMDP:boolean= true;
 
 async function handleRegister() {
  await createUserWithEmailAndPassword(auth, email, password)
   .then((result) => {
-  let dbRef:any = "users/"+auth.currentUser?.uid;
+  // let dbRef:any = "users/"+auth.currentUser?.uid;
    const { user } = result;
-   set(ref(db, dbRef+"/email"), user.email);
-   set(ref(db, dbRef+"/prenom"), prenom);
-   set(ref(db, dbRef+"/nom"), nom);
-   set(ref(db, dbRef+"/role"), role);
+
+   const docData = {
+    uid: user.uid,
+    email: user.email,
+    prenom: prenom,
+    nom: nom,
+    role: role
+   };
+   setDoc(doc(db, "utilisateurs", user.uid), docData)
+   addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
+// la premiere fois que tu te connecte, sa te redirige vers la page d'accueil mais sans reellement te connecter
+
    session.update((cur: any) => {
     return {
     ...cur,
@@ -35,25 +44,31 @@ async function handleRegister() {
   })
   .catch((error) => {
    console.log(error)
+   bonMDP=false;
   });
 } 
 </script>
 
-<div class="register-form contenu-page col">
+<div class="register-form  creation-compte centered-containerProfil col">
     <form on:submit={handleRegister}>
       <div class= "titreZone">
      <h2>S'inscrire</h2>
     </div>
     <div class= "col créerProfil ">
      <input bind:value={email} type="email" placeholder="Email" />
+     <p></p>
      <input bind:value={password} type="password" placeholder="mot de passe" />
+     <p>Veuillez s'assurer que le mot de passe est au minium 6 caractères</p>
      <input bind:value={prenom} type="text" placeholder="Prenom" />
+     <p></p>
      <input bind:value={nom} type="text" placeholder="Nom" />
-     <!-- C'est quoi le but de role et value -->
+     <p></p>
      <input bind:group={role} type="radio" name="role" value="poster">Encadreur
+     <p></p>
      <input bind:group={role} type="radio" name="role" value="searcher">Stagiaire
      <button type="submit">S'inscrire!</button>
     </div>
+
     </form>
   </div>
   

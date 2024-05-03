@@ -1,14 +1,4 @@
-<!--Intréssant pour montrer notre feed plus tard-->
-<!--
-{#each data.posts as post}
-			<li>
-				<a href="/blog/{post.slug}">
-					{post.title}
-				</a>
-			</li>
-		{/each}
 
--->
 <script lang="ts">
 	import "$lib/style.css";
 	import Offre from '$lib/offre';
@@ -41,16 +31,14 @@
         <div class="boxTitre">
         <h1 class=companie>Eccip</h1>
         <p class=description-companie>We specialize in blablabla</p>
+		
         </div>
-        <div class= "boxLogo">
-        <img src="logo.jpg">
-        </div>
-    </div>
+    </div><div class= "boxLogo"></div>
     <div class="titreZone"><h1 >Mon fil</h1>
  </div>
     
  <!--  -->
-    <div class ="scroll-areaAccueil">
+    <div class ="scroll-areaAccueil contenu-page">
         <!--
             in here you put the posts
         -->
