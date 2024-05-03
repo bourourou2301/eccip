@@ -1,33 +1,60 @@
-<script>
+<script lang="ts">
  import "$lib/style.css";
- let inputs= ['','','','',''];
+ import firebase from '$lib/firebase';
+    import { child, get, set, ref, push, type DatabaseReference, off, DataSnapshot } from 'firebase/database';
+    import Offre from "$lib/offre";
+
+    let db = firebase.database;
+    // Generer un id randome ou pas
+    let titre: string;
+    let domaine: string;
+    let localisation: string;
+    let salaire: number;
+    let heure: number;
+    // uID de la personne qui la mis sur le site
+    let proprietaire = firebase.auth.currentUser?.uid; 
+    // array de string des uid des postulants
+
+    
+// const dbRef: DatabaseReference = ref(db, "offres/");
+    async function creerOffre() {
+// let referencePoste = push(dbRef);
+        // set(ref(db, referencePoste.key+"/domaine"), domaine);
+        // set(ref(db, referencePoste.key+"/localisation"), localisation);
+        // set(ref(db, referencePoste.key+"/salaire"), salaire);
+        // set(ref(db, referencePoste.key+"/heure"), heure);
+        let offer:Offre = new Offre(titre,domaine,localisation,salaire,heure,proprietaire);
+        offer.writeOfferToDb();
+    }
+
 </script>
 <div class="container-fluid text-center bg-haut">
 	<h1>Créer une offre</h1>
 </div>
-<div class= "container-fluid contenu-page">
-    <form >
+<div class= "container-fluid centered-container contenu-page">
+    <form on:submit={creerOffre}>
+        <h1>Créer une nouvelle offre </h1>
         <div class="mb-3">
-            <label for="input1" class="form-label">Input 1</label>
-            <input type="text" class="form-control" id="input1" bind:value={inputs[0]} placeholder="Enter value for input 1">
+            <label for="titre" class="form-label">Titre</label>
+            <input bind:value={titre} type="text" placeholder="Titre de l'offre" >
         </div>
         <div class="mb-3">
-            <label for="input2" class="form-label">Input 2</label>
-            <input type="text" class="form-control" id="input2" bind:value={inputs[1]} placeholder="Enter value for input 2">
+            <label for="Domaine" class="form-label">Domaine</label>
+            <input  bind:value={domaine} type="text" placeholder="domaine" >
         </div>
         <div class="mb-3">
-            <label for="input3" class="form-label">Input 3</label>
-            <input type="text" class="form-control" id="input3" bind:value={inputs[2]} placeholder="Enter value for input 3">
+            <label for="Lieu de travail" class="form-label">Lieu de travail</label>
+            <input bind:value={localisation} type="text" placeholder="Localisation">
         </div>
         <div class="mb-3">
-            <label for="input4" class="form-label">Input 4</label>
-            <input type="text" class="form-control" id="input4" bind:value={inputs[3]} placeholder="Enter value for input 4">
+            <label for="Salaire" class="form-label">Salaire</label>
+            <input  bind:value={salaire} type="number" min="0" placeholder="salaire" >
         </div>
         <div class="mb-3">
-            <label for="input5" class="form-label">Input 5</label>
-            <input type="text" class="form-control" id="input5" bind:value={inputs[4]} placeholder="Enter value for input 5">
+            <label for="Heure" class="form-label">Heure</label>
+            <input bind:value={heure} type="number" min="0" placeholder="Heures/Semaine">
         </div>
-        <button type="submit" class="btn btn-primary">Créer offre</button>
+        <button type="submit" class="btn btn-primary center-Button">Créer offre</button>
     </form>
 
 </div>

@@ -22,7 +22,6 @@ session.subscribe((cur: any) => {
 
     onMount(async () => {
     const user: any = await data.getAuthUser();
-   
      const loggedIn = !!user
      session.update((cur: any) => {
       loading = false;
@@ -34,9 +33,14 @@ session.subscribe((cur: any) => {
        loading: false
       };
      });
-   
+     const currentUrl = window.location.href;
+        let fromCreerComptePage = currentUrl.includes('/creerCompte');
      if (loggedIn) {
-      goto('/');
+        if (fromCreerComptePage) {
+                goto('/');
+            } else {
+                goto(currentUrl);
+            }
      }
      else{
         goto('/connexion')
@@ -52,17 +56,20 @@ session.subscribe((cur: any) => {
     }
 </script>
 
+{#if loggedIn}
 <div id="navbar-parent">
-    <div id="profile-pic"></div>
-    <nav class="navbar">
-        <a href="/">Accueil</a>
-        <a href="/chat">Chat</a>
-        <a href="/horaire">Horaire</a>
-        <a href="/profil">Mon profil</a>
-        <a href="/offreDemploi">Les offres d'emplois</a>
-    </nav>
-    <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
+  <div id="profile-pic"></div>
+  <nav class="navbar">
+    <a href="/accueil">Accueil</a>
+    <a href="/chat">Chat</a>
+    <a href="/horaire">Horaire</a>
+    <a href="/profil">Mon profil</a>
+    <a href="/offreDemploi">Les offres d'emplois</a>
+  </nav>
+  <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
 </div>
+{/if}
+
 <slot></slot>
 
 <style>
