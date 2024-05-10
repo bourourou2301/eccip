@@ -1,6 +1,6 @@
 <script lang="ts">
     import firebase from '$lib/firebase';
-    import {session} from "$lib/stores/session";
+    import {userId} from "$lib/stores/userId";
     import { collection, onSnapshot, doc, getDoc} from "firebase/firestore"; 
     import ChatBar from './ChatBar.svelte'; // Chemin relatif à la position du fichier +page.svelte
     import Message from '$lib/message';
@@ -25,8 +25,8 @@
     let listeUtilisateursTextees: string[] = []; 
 
     onMount(async () => {
-        session.subscribe(async (cur: any) => {
-            uid = cur?.sUid.uid;
+        userId.subscribe(async (cur: any) => {
+            let uid = $userId!
             const unsub = onSnapshot(doc(db, "utilisateurs", uid), (doc) => {
                 monNom = doc.get("prenom") + " " + doc.get("nom");
             });

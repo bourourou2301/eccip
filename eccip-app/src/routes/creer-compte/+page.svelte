@@ -2,7 +2,7 @@
 import firebase from '$lib/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { goto } from '$app/navigation';
-import { session } from '$lib/stores/session';
+import { userId } from '$lib/stores/userId';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 
 let db = firebase.db;
@@ -31,15 +31,7 @@ async function handleRegister() {
    addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
 // la premiere fois que tu te connecte, sa te redirige vers la page d'accueil mais sans reellement te connecter
 
-   session.update((cur: any) => {
-    return {
-    ...cur,
-    sUid: auth.currentUser?.uid,
-    sEmail: email,
-    sloggedIn: true,
-    sloading: false
-    };
-   });
+   $userId = user.uid;
    goto('/');
   })
   .catch((error) => {
