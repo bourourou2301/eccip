@@ -11,8 +11,8 @@
 
 	const message = new Message();
 
-    let loggedIn = false;
-	
+    let loggedIn :boolean = false;
+	let profilURL :string = "/profil";
 
 	onMount(async () => {
 		const user: any = await data.getAuthUser();
@@ -20,6 +20,8 @@
 		const currentUrl = window.location.href;
 		let fromCreerComptePage = currentUrl.includes('/creerCompte');
 		if ($userId != undefined) {
+			loggedIn = true;
+			profilURL = profilURL+"?userId="+$userId
 			if (fromCreerComptePage) {
 				goto('/');
 			} else {
@@ -30,6 +32,7 @@
 		}
 	});
 	export function logout() {
+		
 		signOut(firebase.auth)
 			.then(() => {
 				goto('/connexion');
@@ -39,20 +42,20 @@
 			});
 	}
 </script>
-
+{#if loggedIn}
 	<div id="navbar-parent">
 		<div id="profile-pic"></div>
 		<nav class="navbar">
 			<a href="/">Accueil</a>
 			<a href="/chat">Chat</a>
 			<a href="/horaire">Horaire</a>
-			<a href="/profil">Mon profil</a>
+			<a href={profilURL}>Mon profil</a>
 			<a href="/offreDemploi">Les offres d'emplois</a>
 		</nav>
 		<button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
 		<p>user: {$userId}</p>
 	</div>
-
+	{/if}
 
 <slot></slot>
 

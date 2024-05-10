@@ -11,7 +11,7 @@ let email: string = '';
 let password: string = '';
 let prenom: string = '';
 let nom: string = '';
-let role: string = '';
+let typeUser: string = '';
 let bonMDP:boolean= true;
 
 async function handleRegister() {
@@ -25,12 +25,10 @@ async function handleRegister() {
     email: user.email,
     prenom: prenom,
     nom: nom,
-    role: role
+    typeUser: typeUser
    };
    setDoc(doc(db, "utilisateurs", user.uid), docData)
    addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
-// la premiere fois que tu te connecte, sa te redirige vers la page d'accueil mais sans reellement te connecter
-
    $userId = user.uid;
    goto('/');
   })
@@ -55,9 +53,9 @@ async function handleRegister() {
      <p></p>
      <input bind:value={nom} type="text" placeholder="Nom" />
      <p></p>
-     <input bind:group={role} type="radio" name="role" value="poster">Encadreur
+     <input bind:group={typeUser} type="radio" name="role" value="poster">Encadreur
      <p></p>
-     <input bind:group={role} type="radio" name="role" value="searcher">Stagiaire
+     <input bind:group={typeUser} type="radio" name="role" value="searcher">Stagiaire
      <button type="submit">S'inscrire!</button>
     </div>
 

@@ -6,8 +6,6 @@
 	import firebase from '$lib/firebase';
 	import { get, child,set, ref, push, type DatabaseReference, DataSnapshot } from 'firebase/database';
 
-	let db = firebase.database;
-	const dbRef: DatabaseReference = ref(db);
 	let isShowFeed = false;
 	const offresArray:any = [] 
 
