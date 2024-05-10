@@ -4,9 +4,12 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import { userId } from '$lib/stores/userId';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
-let db = firebase.db;
-let auth = firebase.auth;
+
+const db = firebase.db;
+const auth = firebase.auth;
+const storage = getStorage();
 let email: string = '';
 let password: string = '';
 let prenom: string = '';
@@ -14,15 +17,14 @@ let nom: string = '';
 let typeUser: string = '';
 let bonMDP:boolean= true;
 
+
+
 async function handleRegister() {
 
   // Créer un nouveau compte
  await createUserWithEmailAndPassword(auth, email, password)
   .then((result) => {
-  // let dbRef:any = "users/"+auth.currentUser?.uid;
-
-  // Stock les informations de l'utilisateur dans la base de données  
-  let dbRef:any = "users/"+auth.currentUser?.uid;
+  
    const { user } = result;
 
    const docData = {
@@ -32,6 +34,7 @@ async function handleRegister() {
     nom: nom,
     typeUser: typeUser
    };
+   
    setDoc(doc(db, "utilisateurs", user.uid), docData)
    addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
    $userId = user.uid;
@@ -41,7 +44,22 @@ async function handleRegister() {
    console.log(error)
    bonMDP=false;
   });
+
+  
+
 } 
+
+  async function handleFileChange(event: Event) {
+    const input = event.target as HTMLInputElement;
+    const file = input.files?.[0]; // Get the first file from the input
+    if (file) {
+      // Create a storage reference
+      const storageRef = ref(storage, `cv/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+    }
+  }
+
+
 </script>
 
 <div class="register-form  creation-compte centered-containerProfil col">

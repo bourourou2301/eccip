@@ -81,6 +81,8 @@
 				}
 			});
 			isSnapshotLoaded = true;
+			listeRecipient = listeRecipient;
+        listeUtilisateursTextees = listeUtilisateursTextees;
 		});
 	}
 
@@ -100,10 +102,10 @@
 						});
 					} else {
 						listeUtilisateurs.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
-					}
+					}listeUtilisateurs = listeUtilisateurs;
 				}
-				console.log(listeUtilisateursTextees);
 				listeUtilisateurs = listeUtilisateurs;
+				
 			});
 		});
 	}

@@ -1,8 +1,10 @@
 // Import the functions you need from the SDKs you need
-import {initializeApp} from 'firebase/app';
+import { initializeApp } from 'firebase/app';
 import { getFirestore } from "firebase/firestore";
 import { getDatabase } from "firebase/database";
-import {getAuth } from 'firebase/auth';
+import { getAuth } from 'firebase/auth';
+import { getStorage } from "firebase/storage";
+
 // TODO: Add SDKs for Firebase products that you want to unpm install -g firebase-toolsse
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -22,4 +24,5 @@ const firebaseConfig = {
 const firebaseApp = initializeApp(firebaseConfig);
 const db = getFirestore(firebaseApp);
 const auth = getAuth(firebaseApp);
-export default {auth, db};
+const storage = getStorage(firebaseApp);
+export default {auth, db, storage};
