@@ -23,7 +23,7 @@
 			loggedIn = true;
 			profilURL = profilURL+"?userId="+$userId
 			if (fromCreerComptePage) {
-				goto('/');
+				goto('/accueil');
 			} else {
 				goto(currentUrl);
 			}
@@ -48,7 +48,7 @@
 		<nav class="navbar">
 			<a href="/accueil">Accueil</a>
 			<a href="/chat">Chat</a>
-			<a href="/horaire">Horaire</a>
+			<a href="/rapport">Rapport de stage</a>
 			<a href={profilURL}>Mon profil</a>
 			<a href="/offreDemploi">Les offres d'emplois</a>
 		</nav>
