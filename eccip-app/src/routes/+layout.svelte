@@ -5,33 +5,38 @@ import { onMount } from "svelte";
 import { goto } from "$app/navigation";
 import { signOut } from "firebase/auth";
 import firebase from "$lib/firebase";
+import {doc, getDoc} from "firebase/firestore"; 
 import type { LayoutData } from "./$types";
 import Message from "$lib/message";
 export let data: LayoutData;
 
 const message = new Message();
+let db = firebase.db;
 
+let isEncadreur:boolean;
 let loading:boolean = true;
 let loggedIn:boolean = false;
 export let userID: string;
 
-session.subscribe((cur: any) => {   
-     loading = cur?.loading;
-     loggedIn = cur?.loggedIn;
-     if (loggedIn === true) {
-        userID = cur?.sUid.uid;
-     }
+    session.subscribe((cur: any) => {   
+        loading = cur?.loading;
+        loggedIn = cur?.loggedIn;
+        if (loggedIn === true) {
+           userID = cur?.sUid.uid;
+        }
+        console.log(loading);
+        console.log(loggedIn);
+        console.log(userID);
     });
 
     onMount(async () => {
     const user: any = await data.getAuthUser();
-     const loggedIn = !!user
+    loggedIn = !!user
      session.update((cur: any) => {
       loading = false;
       return {
        ...cur,
-       sUid: 
-       user,
+       sUid: user,
        loggedIn,
        loading: false
       };
@@ -48,7 +53,19 @@ session.subscribe((cur: any) => {
      else{
         goto('/connexion')
      }
+
+    if(loggedIn) {
+        const docSnap = await getDoc(doc(db, "utilisateurs", userID));
+        if(docSnap.get("role") === "poster") {
+            isEncadreur = true;
+        }
+    }
+
+
     });
+
+
+    
     export function logout() {
         signOut(firebase.auth).then(() =>{
                 goto("/connexion")
@@ -58,6 +75,8 @@ session.subscribe((cur: any) => {
         })
     }
 
+    
+
 
 </script>
 
@@ -65,9 +84,13 @@ session.subscribe((cur: any) => {
 <div id="navbar-parent">
     <div id="profile-pic"></div>
     <nav class="navbar">
-        <a href="/">Accueil</a>
+        <a href="/accueil">Accueil</a>
         <a href="/chat">Chat</a>
-        <a href="/horaire">Horaire</a>
+        {#if isEncadreur}
+            <a href="/rapport/lire">Lire les rapports</a>
+        {:else}
+            <a href="/rapport/ecrire">Ecrire un rapport</a>
+        {/if}
         <a href="/profil">Mon profil</a>
         <a href="/offreDemploi">Les offres d'emplois</a>
     </nav>

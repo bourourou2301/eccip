@@ -58,6 +58,7 @@
                   listeMessages.set(doc.get("message"), false)
                 }
             });
+            listeMessages = listeMessages;
         });
     }
 
@@ -72,9 +73,8 @@ async function obtenirAnciensChats() {
             }
         });
         isSnapshotLoaded = true;
-        listeUtilisateursTextees.forEach(element => {
-            console.log("neg txt: " + element);
-        });
+        listeRecipient = listeRecipient;
+        listeUtilisateursTextees = listeUtilisateursTextees;
     });
 }
 
@@ -95,7 +95,7 @@ async function obtenirAnciensChats() {
                     } else {
                         listeUtilisateurs.set(doc.get("uid"), doc.get("prenom") + " " + doc.get("nom"));
                     }
-                    
+                    listeUtilisateurs = listeUtilisateurs;
                 }
             });
         });
