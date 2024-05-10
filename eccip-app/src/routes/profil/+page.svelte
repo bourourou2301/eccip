@@ -1,6 +1,5 @@
 <script lang="ts">
 	import '$lib/style.css';
-	import { goto } from '$app/navigation';
 	import { userId } from '$lib/stores/userId';
 	import firebase from '$lib/firebase';
 	import { doc, getDoc } from 'firebase/firestore';
@@ -34,7 +33,7 @@
 	}
 	getUserInfo();
 	function modifierProfil() {
-		window.location.href = 'profil/modification';
+		window.location.href = 'profil/modification'+"?userId="+$userId;
 	}
 </script>
 
