@@ -16,7 +16,7 @@
 
 	onMount(async () => {
 		const user: any = await data.getAuthUser();
-        $userId = user.uid;
+		userId.set(user.uid)
 		const currentUrl = window.location.href;
 		let fromCreerComptePage = currentUrl.includes('/creerCompte');
 		if ($userId != undefined) {
@@ -32,7 +32,6 @@
 	export function logout() {
 		signOut(firebase.auth)
 			.then(() => {
-				$userId = "";
 				goto('/connexion');
 			})
 			.catch((error) => {

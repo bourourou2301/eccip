@@ -40,7 +40,7 @@ class Offre {
       data.location ?? '',
       data.salaire ?? 0,
       data.heures ?? 0,
-      data.ownerUID,
+      data.ownerUID ?? '',
       data.applicants ?? []
     );
   }

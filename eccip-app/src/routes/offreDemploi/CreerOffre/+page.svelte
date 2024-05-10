@@ -1,6 +1,6 @@
 <script lang="ts">
 	import '$lib/style.css';
-	import firebase from '$lib/firebase';
+	import {userId} from "$lib/stores/userId"
 	import Offre from '$lib/offre';
 
 	let titre: string;
@@ -8,11 +8,8 @@
 	let localisation: string;
 	let salaire: number;
 	let heure: number;
-	// uID de la personne qui la mis sur le site
-	let proprietaire = firebase.auth.currentUser?.uid;
-
 	async function creerOffre() {
-		let offer: Offre = new Offre(titre, domaine, localisation, salaire, heure, proprietaire);
+		let offer: Offre = new Offre(titre, domaine, localisation, salaire, heure, $userId);
 		offer.writeOfferToDb();
 	}
 </script>
