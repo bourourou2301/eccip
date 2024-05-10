@@ -46,7 +46,7 @@
 	<div id="navbar-parent">
 		<div id="profile-pic"></div>
 		<nav class="navbar">
-			<a href="/">Accueil</a>
+			<a href="/accueil">Accueil</a>
 			<a href="/chat">Chat</a>
 			<a href="/horaire">Horaire</a>
 			<a href={profilURL}>Mon profil</a>
