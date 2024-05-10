@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import Message from "$lib/message";
-	import { session } from "$lib/stores/session";
 	import { onSnapshot, collection,  } from 'firebase/firestore';
 	import firebase from '$lib/firebase';
 

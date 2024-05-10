@@ -29,6 +29,22 @@
 			isOffersLoaded = true; // Set flag to true after data is loaded
 		  });
 		});
+	let isShowFeed = false;
+	const offresArray:any = [] 
+
+	// function showFeed(){
+	// get(child(dbRef, "offres/")).then((snapshot)=>{
+	// 	snapshot.forEach(function (offres_snapshot){
+	// 		offresArray.push(Offre.fromDataSnapshot(offres_snapshot))
+	// 	})
+	// 	for(let i = 0; i < offresArray.length; i++){
+	// 	console.log(offresArray[i])
+	// 	//make it show in webapp
+	// }
+	// isShowFeed = true;
+	// })
+	
+	// }
 </script>
 
 <div>
@@ -47,8 +63,8 @@
         <!--
             in here you put the posts
         -->
-        <h1>Les offres d'emplois seront ici</h1>
-		<button type="button" on:click={showFeed}>Show the Feed!!!</button>
+        <!-- <h1>Les offres d'emplois seront ici</h1>
+		<button type="button" on:click={}>Show the Feed!!!</button> -->
         
     </div>
 	
