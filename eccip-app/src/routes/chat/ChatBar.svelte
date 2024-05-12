@@ -1,7 +1,6 @@
 <script lang="ts">
   import { onMount, onDestroy } from 'svelte';
   import Message from "$lib/message";
-	import { session } from "$lib/stores/session";
 	import { onSnapshot, collection,  } from 'firebase/firestore';
 	import firebase from '$lib/firebase';
 
@@ -18,7 +17,7 @@
   export let utilisateurEnvoyeur: string;
   export let cleConversation: string;
   export let afficherMessage: boolean;
-  export let listeMessages: Map<string, boolean>;
+  export let listeMessages: Map<string, boolean>;// if true then its a message you sent  false is a message receieved
 
   onMount(async() => {
     chatContainer = document.querySelector('.chat-container');
@@ -97,16 +96,17 @@
     {#if afficherMessage}
       {#each listeMessages as [key, value], index}
         {#if value === true} <!--Si true print le d'une autre couleur quand c true ca veur fire que c toi tui la send-->
-        <li class="message-bubble user" style="bottom: {index * 60}px;">
+        <li class="message-bubble user moi" style="bottom: {index * 60}px;">
           <p class="message-content">{key}</p>
         </li>  
         {:else}
-        <li class="message-bubble user" style="bottom: {index * 60}px;">
+        <li class="message-bubble user reçu" style="bottom: {index * 60}px;">
           <p class="message-content">{key}</p>
         </li>
         {/if}      
       {/each}  
     {/if}
+   
 </ul>
 </div>
 
@@ -128,9 +128,10 @@
 
 <style>
   .chat-container {
+
     position: fixed;
     bottom: 50px;
-    left: 50%;
+    left: 60%;
     transform: translateX(-50%);
     width: 80%;
     max-width: 500px;
@@ -169,7 +170,8 @@
   .message-input-container {
     position: fixed;
     bottom: 0;
-    left: 50%;
+
+    left: 60%;
     transform: translateX(-50%);
     width: 80%;
     max-width: 500px;
@@ -186,8 +188,18 @@
     border: 1px solid #ccc;
   }
 
+
   .go-to-last-message-button {
     display: none; /* Hide the button by default */
   }
+
+  .moi{
+    background-color: green;
+    color: white;
+    text-align: right;
+  }
+
+
+
   
 </style>

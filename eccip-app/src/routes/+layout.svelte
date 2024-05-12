@@ -1,85 +1,47 @@
 <script lang="ts">
-import "$lib/style.css";
-import {session} from "$lib/stores/session";
-import { onMount } from "svelte";
-import { goto } from "$app/navigation";
-import { signOut } from "firebase/auth";
-import firebase from "$lib/firebase";
-import {doc, getDoc} from "firebase/firestore"; 
-import type { LayoutData } from "./$types";
-import Message from "$lib/message";
-export let data: LayoutData;
+	import '$lib/style.css';
+	import { userId } from '$lib/stores/userId';
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
+	import { signOut } from 'firebase/auth';
+	import firebase from '$lib/firebase';
+	import type { LayoutData } from './$types';
+	import Message from '$lib/message';
+	export let data: LayoutData;
 
-const message = new Message();
-let db = firebase.db;
+	const message = new Message();
 
-let isEncadreur:boolean;
-let loading:boolean = true;
-let loggedIn:boolean = false;
-export let userID: string;
+    let loggedIn :boolean = false;
+	let profilURL :string = "/profil";
 
-    session.subscribe((cur: any) => {   
-        loading = cur?.loading;
-        loggedIn = cur?.loggedIn;
-        if (loggedIn === true) {
-           userID = cur?.sUid.uid;
-        }
-        console.log(loading);
-        console.log(loggedIn);
-        console.log(userID);
-    });
-
-    onMount(async () => {
-    const user: any = await data.getAuthUser();
-    loggedIn = !!user
-     session.update((cur: any) => {
-      loading = false;
-      return {
-       ...cur,
-       sUid: user,
-       loggedIn,
-       loading: false
-      };
-     });
-     const currentUrl = window.location.href;
-        let fromCreerComptePage = currentUrl.includes('/creerCompte');
-     if (loggedIn) {
-        if (fromCreerComptePage) {
-                goto('/');
-            } else {
-                goto(currentUrl);
-            }
-     }
-     else{
-        goto('/connexion')
-     }
-
-    if(loggedIn) {
-        const docSnap = await getDoc(doc(db, "utilisateurs", userID));
-        if(docSnap.get("role") === "poster") {
-            isEncadreur = true;
-        }
-    }
-
-
-    });
-
-
-    
-    export function logout() {
-        signOut(firebase.auth).then(() =>{
-                goto("/connexion")
-                loggedIn = false;
-        }).catch((error) =>{
-            throw new Error(error);
-        })
-    }
-
-    
-
-
+	onMount(async () => {
+		const user: any = await data.getAuthUser();
+		userId.set(user.uid)
+		const currentUrl = window.location.href;
+		let fromCreerComptePage = currentUrl.includes('/creerCompte');
+		if ($userId != undefined) {
+			loggedIn = true;
+			profilURL = profilURL+"?userId="+$userId
+			if (fromCreerComptePage) {
+				goto('/');
+			} else {
+				goto(currentUrl);
+			}
+		} else {
+			goto('/connexion');
+		}
+	});
+	export function logout() {
+		
+		signOut(firebase.auth)
+			.then(() => {
+				goto('/connexion');
+			})
+			.catch((error) => {
+				throw new Error(error);
+			});
+	}
 </script>
-
 {#if loggedIn}
 <div id="navbar-parent">
     <div id="profile-pic"></div>
@@ -91,7 +53,7 @@ export let userID: string;
         {:else}
             <a href="/rapport/ecrire">Ecrire un rapport</a>
         {/if}
-        <a href="/profil">Mon profil</a>
+        <a href={profilURL}>Mon profil</a>
         <a href="/offreDemploi">Les offres d'emplois</a>
     </nav>
     <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
@@ -102,49 +64,47 @@ export let userID: string;
 <slot></slot>
 
 <style>
-    
-    #navbar-parent {
-        background-color: rgb(62, 62, 155);
-        width: 120px;
-        height: 100vh;
-        box-shadow: 10px 10px 10px #19355a;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
-        position: fixed;
-        margin-right: 2px;
-        
-    }
-    
-    .navbar {
-        display: flex;
-        gap: 20px;
-        flex-direction: column;
-        box-sizing: border-box;
-        width:fit-content;
-        height: fit-content;
-        justify-content: center;
-        align-items: center;
-    }
-    
-    .navbar a {
-        font-family: 'Courier New', Courier, monospace;
-        text-align: center;
-            color: aliceblue;
-        text-decoration: none;
-        margin-top: 20px;
-        margin-bottom: 20px;
-    }
-    
-    #profile-pic {
-        margin-left: auto;
-        margin-right: auto;
-        margin-top: 10px;
-        margin-bottom: 50px;
-        background-color: black;
-        border-radius: 50%;
-        width: 65px;
-        height: 65px;
-    }
-    </style>
+	#navbar-parent {
+		background-color: rgb(62, 62, 155);
+		width: 120px;
+		height: 100vh;
+		box-shadow: 10px 10px 10px #19355a;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		position: fixed;
+		margin-right: 2px;
+	}
+
+	.navbar {
+		display: flex;
+		gap: 20px;
+		flex-direction: column;
+		box-sizing: border-box;
+		width: fit-content;
+		height: fit-content;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.navbar a {
+		font-family: 'Courier New', Courier, monospace;
+		text-align: center;
+		color: aliceblue;
+		text-decoration: none;
+		margin-top: 20px;
+		margin-bottom: 20px;
+	}
+
+	#profile-pic {
+		margin-left: auto;
+		margin-right: auto;
+		margin-top: 10px;
+		margin-bottom: 50px;
+		background-color: black;
+		border-radius: 50%;
+		width: 65px;
+		height: 65px;
+	}
+</style>

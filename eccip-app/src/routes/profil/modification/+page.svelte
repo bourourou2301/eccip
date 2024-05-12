@@ -1,60 +1,57 @@
 <script lang="ts">
 	//  in this I gave random values but when db is connected you can import all of these
-  	import "$lib/style.css";
-  	import firebase from '$lib/firebase';
-	import {ref, get, set, child} from "firebase/database"
+	import '$lib/style.css';
+	import { userId } from '$lib/stores/userId';
+	import { page } from '$app/stores';
+	import firebase from '$lib/firebase';
+	import { doc, getDoc, addDoc, setDoc } from 'firebase/firestore';
 
-	const db = firebase.database;
-    let dbRef = ref(db, "users/")
-	
+	const db = firebase.db;
+
 	let prenom;
 	let nom;
 	let typeUser;
 	let email;
-	get(child(dbRef, firebase.auth.currentUser!.uid)).then((snapshot) =>{
-             prenom = snapshot.val().prenom;
-             nom = snapshot.val().nom;
-             typeUser = snapshot.val().role;
-             email = snapshot.val().email;
-             //add other things to get from db as it goes
-        })
+	let bio;
+	let tagEmploi;
+	let localisation;
 
-	let prenomTempo = prenom;	
+	async function getUserInfo() {
+		$userId = $page.url.searchParams.get('userId')!;
+		const docRef = doc(db, 'utilisateurs', $userId);
+		const docSnap = await getDoc(docRef);
+		if (docSnap.exists()) {
+			const data = docSnap.data();
+			prenom = data.prenom;
+			nom = data.nom;
+			typeUser = data.typeUser ?? '';
+			email = data.email;
+			bio = data.bio ?? '';
+			tagEmploi = data.tagEmploi ?? '';
+			localisation = data.localisation ?? '';
+		}
+	}
+	getUserInfo();
+
+	let prenomTempo = prenom;
 	let nomTempo = nom;
 	let typeUserTempo = typeUser;
 	let emailTempo = email;
-
-	let bio =
-		'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';
 	let bioTempo = bio;
-
-	let tagEmploi = '';
 	let tagEmploiTempo = tagEmploi;
-
-	let localisation = '';
 	let localisationTempo = localisation;
 
-	let motDePasse = '';
-	let nouveauMDP = '';
-	let confirmerMDP = '';
-	let memeMDP = true;
-	function changementMotDePasse() {
-		memeMDP = false;
-		//make a different button for that, its too fucked to make it in the same
+	async function handleSubmit() {
+		await setDoc(doc(db, 'utilisateurs', $userId), {
+			prenom: prenomTempo ?? '',
+			nom: nomTempo ?? '',
+			typeUser: typeUserTempo ?? '',
+			email: emailTempo ?? '',
+			bio: bioTempo ?? '',
+			tagEmploi: tagEmploiTempo ?? '',
+			localisation: localisationTempo ?? ''
+		});
 	}
-	function handleSubmit() {
-		set(ref(db, "users/"+firebase.auth.currentUser?.uid),{
-			prenom : prenomTempo,
-			nom : nomTempo,
-			role : typeUserTempo,
-			email : emailTempo,
-			bio : bioTempo,
-			tagEmploi : tagEmploiTempo,
-			localisation : localisationTempo
-		})
-		
-	}
-  
 </script>
 
 <div class="container-fluid text-center bg-haut">
@@ -142,34 +139,9 @@
 				bind:value={localisationTempo}
 			/>
 		</div>
-		<div class="mb-5">
-			<input
-				type="password"
-				class="form-control"
-				placeholder="mot de passe"
-				bind:value={nouveauMDP}
-				on:input={changementMotDePasse}
-			/>
-		</div>
-		<div class="mb-5">
-			<input
-				type="password"
-				class="form-control"
-				placeholder="confirmer le mot de passe"
-				bind:value={confirmerMDP}
-				on:input={changementMotDePasse}
-			/>
-		</div>
-		{#if confirmerMDP !== '' && nouveauMDP !== confirmerMDP && memeMDP == false}
-			<div class="alert alert-danger" role="alert">
-				Les mots de passes ne sont pas les mêmes. Veillez faire attention.
-			</div>
-		{/if}
-		<!-- bouton pour confirmer la modification  -->
+
 		<div>
-			<button type="submit" class="btn btn-primary" on:click={handleSubmit} disabled={!memeMDP}
-				>Confirmer</button
-			>
+			<button type="submit" class="btn btn-primary" on:click={handleSubmit}>Confirmer</button>
 		</div>
 	</div>
 </div>

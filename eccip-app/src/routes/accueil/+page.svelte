@@ -1,29 +1,50 @@
 
 <script lang="ts">
 	import "$lib/style.css";
+	import { onMount } from "svelte";
+	let typeUser = ''; // la variable pour afficher le type de page correct selon le type de user
+	function pageCréationOffre() { window.location.href = 'routes/offreDemploi/CreerOffre'; }
 	import Offre from '$lib/offre';
 
 	import firebase from '$lib/firebase';
 	import { get, child,set, ref, push, type DatabaseReference, DataSnapshot } from 'firebase/database';
 
-	let db = firebase.database;
-	const dbRef: DatabaseReference = ref(db);
+	let db = firebase.db;
+	//const dbRef = ref(db, "offres/")
+		
+		let arrayOffre: Offre[] = [];
+		let isOffersLoaded = false; // Flag to track data loading
+		
+		onMount(() => {
+		//   get(dbRef).then((snapshot) => {
+		// 	snapshot.forEach((val) => {
+		// 	  let titre = val.child("titre").val();
+		// 	  let domaine = val.child("domaine").val();
+		// 	  let location = val.child("location").val();
+		// 	  let salaire = val.child("salaire").val();
+		// 	  let heures = val.child("heures").val();
+		
+		// 	  arrayOffre.push(new Offre(titre, domaine, location, salaire, heures));
+		// 	});
+		// 	isOffersLoaded = true; // Set flag to true after data is loaded
+		//   });
+		});
 	let isShowFeed = false;
 	const offresArray:any = [] 
 
-	function showFeed(){
-	get(child(dbRef, "offres/")).then((snapshot)=>{
-		snapshot.forEach(function (offres_snapshot){
-			offresArray.push(Offre.fromDataSnapshot(offres_snapshot))
-		})
-		for(let i = 0; i < offresArray.length; i++){
-		console.log(offresArray[i])
-		//make it show in webapp
-	}
-	isShowFeed = true;
-	})
+	// function showFeed(){
+	// get(child(dbRef, "offres/")).then((snapshot)=>{
+	// 	snapshot.forEach(function (offres_snapshot){
+	// 		offresArray.push(Offre.fromDataSnapshot(offres_snapshot))
+	// 	})
+	// 	for(let i = 0; i < offresArray.length; i++){
+	// 	console.log(offresArray[i])
+	// 	//make it show in webapp
+	// }
+	// isShowFeed = true;
+	// })
 	
-	}
+	// }
 </script>
 
 <div>
@@ -42,8 +63,8 @@
         <!--
             in here you put the posts
         -->
-        <h1>Les offres d'emplois seront ici</h1>
-		<button type="button" on:click={showFeed}>Show the Feed!!!</button>
+        <!-- <h1>Les offres d'emplois seront ici</h1>
+		<button type="button" on:click={}>Show the Feed!!!</button> -->
         
     </div>
 	

@@ -18,7 +18,6 @@ color: aliceblue;
   object-fit: cover;
 }*/
 
-/*horaire */
 .grille {
     display: flex;
     margin-left: 200px; 
@@ -43,7 +42,7 @@ color: aliceblue;
     text-align: left;
     border: 1px solid #ddd;
 }
-/*page d'accueil*/
+
 *{
     margin: 0;
 }
@@ -212,6 +211,41 @@ header {
 }
 .créerProfil{
    left: 100%;
+}
+.col-md-3.messageOuvert {
+    height: 100vh;
+}
 
+.conversations-list {
+    margin-top: 10px;
+    height: 100%;
+ overflow-y: auto;
+}
+.popup-container {
+    z-index: 9999;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
+.popup {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+}
+.contenuPage {
+    margin-left: 120px;
+}
+.messageActuel {
+    border-left: 1px solid #dddddd;
+}
+.titrePage {
+    background-color: rgb(62, 62, 155);
+    color: aliceblue;
 }

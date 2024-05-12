@@ -2,7 +2,7 @@
 import firebase from '$lib/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { goto } from '$app/navigation';
-import { session } from '$lib/stores/session';
+import { userId } from '$lib/stores/userId';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
@@ -14,14 +14,17 @@ let email: string = '';
 let password: string = '';
 let prenom: string = '';
 let nom: string = '';
-let role: string = '';
+let typeUser: string = '';
 let bonMDP:boolean= true;
 
 
 
 async function handleRegister() {
+
+  // Créer un nouveau compte
  await createUserWithEmailAndPassword(auth, email, password)
   .then((result) => {
+
    const { user } = result;
 
    const docData = {
@@ -29,22 +32,13 @@ async function handleRegister() {
     email: user.email,
     prenom: prenom,
     nom: nom,
-    role: role
+    typeUser: typeUser
    };
    
    setDoc(doc(db, "utilisateurs", user.uid), docData)
    addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
-
-   session.update((cur: any) => {
-    return {
-    ...cur,
-    sUid: auth.currentUser?.uid,
-    sEmail: email,
-    sloggedIn: true,
-    sloading: false
-    };
-   });
-   goto('/accueil');
+   $userId = user.uid;
+   goto('/');
   })
   .catch((error) => {
    console.log(error)
@@ -82,10 +76,11 @@ async function handleRegister() {
      <p></p>
      <input bind:value={nom} type="text" placeholder="Nom" />
      <p></p>
-     <input bind:group={role} type="radio" name="role" value="poster">Encadreur
+     <input bind:group={typeUser} type="radio" name="role" value="poster">Encadreur
      <p></p>
-     <input bind:group={role} type="radio" name="role" value="searcher">Stagiaire
+     <input bind:group={typeUser} type="radio" name="role" value="searcher">Stagiaire
      <input type="file" on:change={handleFileChange} /> Déposez votre CV !
+
      <button type="submit">S'inscrire!</button>
     </div>
 
