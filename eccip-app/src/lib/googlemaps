@@ -1,0 +1,22 @@
+import { Loader } from '@googlemaps/js-api-loader';
+  import { onMount } from 'svelte';
+
+  let mapInstance;
+  let element; // Reference to the map container div
+
+  onMount(async () => {
+    const loader = new Loader({
+        apiKey: "AIzaSyCeFsWsy6JeErGV5___99Td9MYwaSx-yYk", // Replace with your actual string API key
+        version: 'weekly', // Or ' quarterly'
+        libraries: ['places'], // Include 'places' for geolocation or search
+      });
+
+    const { Map } = await loader.load();
+
+    mapInstance = new Map(element, {
+      center: { lat: -34.397, lng: 150.644 }, // Set your initial center coordinates
+      zoom: 8,
+    });
+
+    // Add map interactivity or markers here (optional)
+  });
