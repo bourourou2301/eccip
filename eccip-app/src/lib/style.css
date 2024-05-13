@@ -6,6 +6,11 @@
 
   
 }
+.map-container {
+    width: 200px;
+    height: 100px; 
+    margin: 10px auto; 
+  }
 .bg-haut {
 background-color:rgb(62, 62, 155);
 color: aliceblue;

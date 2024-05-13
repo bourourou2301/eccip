@@ -1,5 +1,4 @@
-
-<script lang="ts">
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQkV-WTexdOYO5QiC08c69WDWASBzlqGY", lang="ts">
 	import "$lib/style.css";
 	import { onMount } from "svelte";
 	let typeUser = ''; // la variable pour afficher le type de page correct selon le type de user
@@ -56,14 +55,18 @@
 			<ul id="jobOffers">
 			  {#if isOffersLoaded}
 				{#each arrayOffre as offre}
-				  <li class="job-item">
 					<h2>{offre.titre}</h2>
 					<p>Domaine: {offre.domaine} </p>
 					<p>Lieu: {offre.location} </p>
 					<p>Salaire: {offre.salaire} $ par h</p>
 					<p>Heures: {offre.heures} h</p>
 					<button class="button postuler">Postuler</button>
-				  </li>
+					<img src="https://maps.googleapis.com/maps/api/staticmap?
+					center={offre.location}&
+					zoom=12&
+					size=300x200&
+					markers=color:red%7C{offre.location}&
+					key=AIzaSyDQkV-WTexdOYO5QiC08c69WDWASBzlqGY">
 				{/each}
 			  {:else}
 				<p>Chargement des offres en cours...</p>

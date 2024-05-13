@@ -151,6 +151,9 @@
 				on:input={changementMotDePasse}
 			/>
 		</div>
+		<div>
+			photo profil
+		</div>
 		<div class="mb-5">
 			<input
 				type="password"
