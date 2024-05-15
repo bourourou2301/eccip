@@ -6,24 +6,23 @@
 	import { signOut } from 'firebase/auth';
 	import firebase from '$lib/firebase';
 	import type { LayoutData } from './$types';
-	import Message from '$lib/message';
 	export let data: LayoutData;
 
-	const message = new Message();
-
+	let isEncadreur: boolean;
     let loggedIn :boolean = false;
-	let profilURL :string = "/profil";
+	// let profilURL :string = "/profil";
 
 	onMount(async () => {
-		const user: any = await data.getAuthUser();
-		userId.set(user.uid)
 		const currentUrl = window.location.href;
 		let fromCreerComptePage = currentUrl.includes('/creerCompte');
-		if ($userId != undefined) {
+		const user: any = await data.getAuthUser();
+		console.log(user.uid);
+		if (user.uid != undefined) {
+			userId.set(user.uid)
 			loggedIn = true;
-			profilURL = profilURL+"?userId="+$userId
+			// profilURL = profilURL+"?userId="+$userId
 			if (fromCreerComptePage) {
-				goto('/');
+				goto('/accueil');
 			} else {
 				goto(currentUrl);
 			}
@@ -31,8 +30,10 @@
 			goto('/connexion');
 		}
 	});
+
+	
 	export function logout() {
-		
+		loggedIn = false;
 		signOut(firebase.auth)
 			.then(() => {
 				goto('/connexion');
@@ -53,14 +54,14 @@
         {:else}
             <a href="/rapport/ecrire">Ecrire un rapport</a>
         {/if}
-        <a href={profilURL}>Mon profil</a>
+        <!-- <a href={profilURL}>Mon profil</a> -->
         <a href="/offreDemploi">Les offres d'emplois</a>
     </nav>
     <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
-    <p>user: {userID}</p>
+    <p>user: {$userId}</p>
 </div>
 {/if}
-
+``
 <slot></slot>
 
 <style>
