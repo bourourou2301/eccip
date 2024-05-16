@@ -134,7 +134,33 @@
 				bind:value={localisationTempo}
 			/>
 		</div>
-
+		<div class="mb-5">
+			<input
+				type="password"
+				class="form-control"
+				placeholder="mot de passe"
+				bind:value={nouveauMDP}
+				on:input={changementMotDePasse}
+			/>
+		</div>
+		<div>
+			photo profile
+		</div>
+		<div class="mb-5">
+			<input
+				type="password"
+				class="form-control"
+				placeholder="confirmer le mot de passe"
+				bind:value={confirmerMDP}
+				on:input={changementMotDePasse}
+			/>
+		</div>
+		{#if confirmerMDP !== '' && nouveauMDP !== confirmerMDP && memeMDP == false}
+			<div class="alert alert-danger" role="alert">
+				Les mots de passes ne sont pas les mêmes. Veillez faire attention.
+			</div>
+		{/if}
+		<!-- bouton pour confirmer la modification  -->
 		<div>
 			<button type="submit" class="btn btn-primary" on:click={handleSubmit}>Confirmer</button>
 		</div>
