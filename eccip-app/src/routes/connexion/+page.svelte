@@ -1,6 +1,6 @@
 <script lang="ts">
     import "$lib/style.css";
-	import { session } from '$lib/stores/session';
+	import { userId } from '$lib/stores/userId';
      import firebase from '$lib/firebase';
      import {
       signInWithEmailAndPassword,
@@ -18,11 +18,7 @@
       await signInWithEmailAndPassword(auth, email, password)
        .then((result) => {
         const { user }: UserCredential = result;
-        session.set({
-            sUid: user?.uid,
-            sLoading: false,
-            sLoggedIn: true
-        });
+        $userId = user.uid;
         goto('/accueil');
        })
        .catch((error) => {

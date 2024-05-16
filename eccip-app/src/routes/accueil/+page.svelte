@@ -2,10 +2,20 @@
 	import "$lib/style.css";
 	import { onMount } from "svelte";
 	let typeUser = ''; // la variable pour afficher le type de page correct selon le type de user
-	function pageCréationOffre() { window.location.href = '/offreDemploi/CreerOffre'; }
+	function pageCréationOffre() {
+		window.location.href = 'routes/offreDemploi/CreerOffre';
+	}
 	import Offre from '$lib/offre';
 	import firebase from '$lib/firebase';
-	import { get, child,set, ref, push, type DatabaseReference, DataSnapshot } from 'firebase/database';
+	import {
+		get,
+		child,
+		set,
+		ref,
+		push,
+		type DatabaseReference,
+		DataSnapshot
+	} from 'firebase/database';
 
 	let db = firebase.database;
 	const dbRef = ref(db, "offres/")
