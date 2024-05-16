@@ -1,9 +1,10 @@
 <script lang="ts">
 import firebase from '$lib/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getMultiFactorResolver } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import { session } from '$lib/stores/session';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
+import { getStorage, ref, getDownloadURL, uploadBytesResumable } from "firebase/storage";
 
 let db = firebase.db;
 let auth = firebase.auth;
@@ -13,47 +14,61 @@ let prenom: string = '';
 let nom: string = '';
 let role: string = '';
 let bonMDP:boolean= true;
+let photoProfil:File;
+
+const storage = getStorage();
 
 async function handleRegister() {
 
   // Créer un nouveau compte
- await createUserWithEmailAndPassword(auth, email, password)
-  .then((result) => {
-  // let dbRef:any = "users/"+auth.currentUser?.uid;
+  await createUserWithEmailAndPassword(auth, email, password)
+    .then((result) => {
+      const { user } = result;
+      console.log(1);
+        const storageRef = ref(storage, `profile_images/${user.uid}`);
+        const uploadTask = uploadBytesResumable(storageRef, photoProfil);
 
-  // Stock les informations de l'utilisateur dans la base de données  
-  let dbRef:any = "users/"+auth.currentUser?.uid;
-   const { user } = result;
+        uploadTask.on(
+          'state_changed',
+          async () => {
+            // Get downloadable URL after successful upload
+            const downloadURL = await getDownloadURL(storageRef);
 
-   const docData = {
-    uid: user.uid,
-    email: user.email,
-    prenom: prenom,
-    nom: nom,
-    role: role
-   };
-   setDoc(doc(db, "utilisateurs", user.uid), docData)
-   addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
-// la premiere fois que tu te connecte, sa te redirige vers la page d'accueil mais sans reellement te connecter
+            // Update user data with photoURL
+            const docData = {
+              uid: user.uid,
+              email: user.email,
+              prenom: prenom,
+              nom: nom,
+              role: role,
+              photoProfil: downloadURL,
+            };
 
-   session.update((cur: any) => {
-    return {
-    ...cur,
-    sUid: auth.currentUser?.uid,
-    sEmail: email,
-    sloggedIn: true,
-    sloading: false
-    };
-   });
+            setDoc(doc(db, "utilisateurs", user.uid), docData);
+          }
+        );
+        console.log(2);
+      session.update((cur: any) => {
+      return {
+      ...cur,
+      sUid: auth.currentUser?.uid,
+      sEmail: email,
+      sloggedIn: true,
+      sloading: false
+      };
+    });
+console.log(3);
+      // Amène l'utilisateur dans la page d'acceuil
+      goto('/');
+    })
+    .catch((error) => {
+      console.error(error);
+      bonMDP=false;
+      console.log(4);
+    });
+    console.log(5);
+}
 
-   // Amène l'utilisateur dans la page d'acceuil
-   goto('/');
-  })
-  .catch((error) => {
-   console.log(error)
-   bonMDP=false;
-  });
-} 
 </script>
 
 <div class="register-form  creation-compte centered-containerProfil col">
@@ -69,6 +84,9 @@ async function handleRegister() {
      <input bind:value={prenom} type="text" placeholder="Prenom" />
      <p></p>
      <input bind:value={nom} type="text" placeholder="Nom" />
+     <p></p>
+     <p>Veuillez choisir une photo de</p>
+     <input bind:value={photoProfil} type="File"/>
      <p></p>
      <input bind:group={role} type="radio" name="role" value="poster">Encadreur
      <p></p>

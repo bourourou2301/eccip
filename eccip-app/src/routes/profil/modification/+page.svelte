@@ -152,7 +152,7 @@
 			/>
 		</div>
 		<div>
-			photo profil
+			photo profile
 		</div>
 		<div class="mb-5">
 			<input

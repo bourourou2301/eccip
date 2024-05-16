@@ -14,6 +14,7 @@
          let tagEmploi = "";
          let localisation = "";
          let cv = "";
+         let photoProfil;
 
          get(child(dbRef, firebase.auth.currentUser!.uid)).then((snapshot) =>{
              prenom = snapshot.val().prenom;
