@@ -8,25 +8,25 @@
 	function pageCréationOffre() { window.location.href = 'offreDemploi/CreerOffre'; }
 		
 	
-		let db = firebase.database;
-		const dbRef = ref(db, "offres/")
+		// let db = firebase.database;
+		// const dbRef = ref(db, "offres/")
 		
 let arrayOffre: Offre[] = [];
 let isOffersLoaded = false; // Flag to track data loading
 
 onMount(() => {
-  get(dbRef).then((snapshot) => {
-	snapshot.forEach((val) => {
-	  let titre = val.child("titre").val();
-	  let domaine = val.child("domaine").val();
-	  let location = val.child("location").val();
-	  let salaire = val.child("salaire").val();
-	  let heures = val.child("heures").val();
+//   get(dbRef).then((snapshot) => {
+// 	snapshot.forEach((val) => {
+// 	  let titre = val.child("titre").val();
+// 	  let domaine = val.child("domaine").val();
+// 	  let location = val.child("location").val();
+// 	  let salaire = val.child("salaire").val();
+// 	  let heures = val.child("heures").val();
 
-	  arrayOffre.push(new Offre(titre, domaine, location, salaire, heures));
-	});
-	isOffersLoaded = true; // Set flag to true after data is loaded
-  });
+// 	  arrayOffre.push(new Offre(titre, domaine, location, salaire, heures));
+// 	});
+// 	isOffersLoaded = true; // Set flag to true after data is loaded
+//   });
 });
 </script>
 	

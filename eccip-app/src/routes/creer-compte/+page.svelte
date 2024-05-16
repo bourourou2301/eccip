@@ -16,6 +16,8 @@ let prenom: string = '';
 let nom: string = '';
 let typeUser: string = '';
 let bonMDP:boolean= true;
+let fichier: File | undefined;
+let montrerFichier: boolean = false;
 
 
 
@@ -38,7 +40,12 @@ async function handleRegister() {
    setDoc(doc(db, "utilisateurs", user.uid), docData)
    addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
    $userId = user.uid;
-   goto('/');
+   if (fichier) {
+      // Create a storage reference
+      const storageRef = ref(storage, `cv/${user.uid}/${fichier.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, fichier);
+    }
+   goto('/navbar/accueil');
   })
   .catch((error) => {
    console.log(error)
@@ -51,12 +58,7 @@ async function handleRegister() {
 
   async function handleFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
-    const file = input.files?.[0]; // Get the first file from the input
-    if (file) {
-      // Create a storage reference
-      const storageRef = ref(storage, `cv/${file.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, file);
-    }
+    fichier = input.files?.[0]; // Get the first file from the input
   }
 
 
@@ -79,8 +81,9 @@ async function handleRegister() {
      <input bind:group={typeUser} type="radio" name="role" value="poster">Encadreur
      <p></p>
      <input bind:group={typeUser} type="radio" name="role" value="searcher">Stagiaire
-     <input type="file" on:change={handleFileChange} /> Déposez votre CV !
-
+     {#if typeUser === "searcher"}
+      <input type="file" on:change={handleFileChange} placeholder=""/> Déposez votre CV !
+      {/if}
      <button type="submit">S'inscrire!</button>
     </div>
 

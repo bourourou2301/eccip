@@ -8,18 +8,24 @@
 	import type { LayoutData } from './$types';
 	export let data: LayoutData;
 
+	
 	let isEncadreur: boolean;
     let loggedIn :boolean = false;
 	// let profilURL :string = "/profil";
+	console.log("caca");
+	
 
 	onMount(async () => {
 		const currentUrl = window.location.href;
 		let fromCreerComptePage = currentUrl.includes('/creerCompte');
+		console.log("caca1");
 		const user: any = await data.getAuthUser();
-		console.log(user.uid);
+		console.log("caca2");
 		if (user.uid != undefined) {
+			console.log("caca3");
 			userId.set(user.uid)
 			loggedIn = true;
+			loggedIn = loggedIn;
 			// profilURL = profilURL+"?userId="+$userId
 			if (fromCreerComptePage) {
 				goto('/accueil');
@@ -34,6 +40,7 @@
 	
 	export function logout() {
 		loggedIn = false;
+		loggedIn = loggedIn;
 		signOut(firebase.auth)
 			.then(() => {
 				goto('/connexion');
@@ -42,26 +49,29 @@
 				throw new Error(error);
 			});
 	}
+
 </script>
+
+
 {#if loggedIn}
-<div id="navbar-parent">
-    <div id="profile-pic"></div>
-    <nav class="navbar">
-        <a href="/accueil">Accueil</a>
-        <a href="/chat">Chat</a>
-        {#if isEncadreur}
-            <a href="/rapport/lire">Lire les rapports</a>
-        {:else}
-            <a href="/rapport/ecrire">Ecrire un rapport</a>
-        {/if}
-        <!-- <a href={profilURL}>Mon profil</a> -->
-        <a href="/offreDemploi">Les offres d'emplois</a>
-    </nav>
-    <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
-    <p>user: {$userId}</p>
-</div>
+	<div id="navbar-parent">
+	    <div id="profile-pic"></div>
+	    <nav class="navbar">
+	        <a href="/navbar/accueil">Accueil</a>
+	        <a href="/navbar/chat">Chat</a>
+	        {#if isEncadreur}
+	            <a href="/navbar/rapport/lire">Lire les rapports</a>
+	        {:else}
+	            <a href="/navbar/rapport/ecrire">Ecrire un rapport</a>
+	        {/if}
+	        <!-- <a href={profilURL}>Mon profil</a> -->
+	        <a href="/navbar/offreDemploi">Les offres d'emplois</a>
+	    </nav>
+	    <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
+	    <p>user: {$userId}</p>
+	</div>
 {/if}
-``
+
 <slot></slot>
 
 <style>
