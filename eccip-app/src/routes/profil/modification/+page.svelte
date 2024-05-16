@@ -11,6 +11,7 @@
 	let nom;
 	let typeUser;
 	let email;
+
 	get(child(dbRef, firebase.auth.currentUser!.uid)).then((snapshot) =>{
              prenom = snapshot.val().prenom;
              nom = snapshot.val().nom;
@@ -50,7 +51,7 @@
 			email : emailTempo,
 			bio : bioTempo,
 			tagEmploi : tagEmploiTempo,
-			localisation : localisationTempo
+			localisation : localisationTempo,
 		})
 		
 	}
