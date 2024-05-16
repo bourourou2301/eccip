@@ -33,7 +33,7 @@
 	}
 	getUserInfo();
 	function modifierProfil() {
-		window.location.href = 'profil/modification'+"?userId="+$userId;
+		window.location.href = "/profil/modification"+"?userId="+$userId;
 	}
 </script>
 

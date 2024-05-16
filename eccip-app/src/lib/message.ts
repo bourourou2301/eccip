@@ -1,5 +1,5 @@
 import firebase from '$lib/firebase';
-import { collection, addDoc, doc, setDoc, serverTimestamp, onSnapshot, getDoc } from "firebase/firestore";
+import { collection, addDoc, doc, setDoc, serverTimestamp, onSnapshot, getDoc, query, where, getDocs } from "firebase/firestore";
 
 
 const db = firebase.db;
@@ -24,9 +24,19 @@ class Message {
 
 
   public async hasExistingConversation(uIDEnvoyeur: string, uIDRecipient: string): Promise<boolean> {
-    const docRef = doc(collection(db, "utilisateurs", uIDEnvoyeur, "chats"), uIDRecipient);
-    const docSnapshot = await getDoc(docRef);
-    return docSnapshot.exists();
+    // const docRef = doc(collection(db, "utilisateurs", uIDEnvoyeur, "chats"));
+    // const docSnapshot = await getDoc(docRef);
+    // console.log(docSnapshot.data())
+    // return docSnapshot.exists();
+    const collectionRef = collection(db, "utilisateurs", uIDEnvoyeur, "chats");
+    const q = query(collectionRef, where("utilisateurRecipient", "==", uIDRecipient));
+    const snapshot = await getDocs(q);
+    if(snapshot.size != 0){
+      return true
+    }
+    else{
+      return false;
+    }
   }
 
 
