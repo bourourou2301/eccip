@@ -89,7 +89,7 @@
 					size=300x200&
 					markers=color:red%7C{offre.location}&
 					key=AIzaSyDQkV-WTexdOYO5QiC08c69WDWASBzlqGY"
-						/>
+						alt="location"/>
 					{/each}
 				{:else}
 					<p>Chargement des offres en cours...</p>
