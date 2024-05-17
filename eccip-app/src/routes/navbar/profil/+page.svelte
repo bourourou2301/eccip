@@ -6,6 +6,8 @@
 	import { doc, getDoc, onSnapshot, updateDoc, collection } from 'firebase/firestore';
 	import { page } from '$app/stores';
 	import { onMount } from 'svelte';
+	import { arrayUnion } from 'firebase/firestore/lite';
+	import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 	const db = firebase.db;
 
 	let prenom = '';
@@ -18,12 +20,14 @@
 	let afficherPopup: boolean = false;
 	let stagiaires: Map<string, string> = new Map();
 	let stagiairesDispo: Map<string, string> = new Map();
+	let listeURLDownload: Map<string, string> = new Map();
 
 	onMount(async () => {
         if($role === "poster") {
 			await obtenirStagiaires();
 			await obtenirStagiairesDispo();
 		}
+		getDownloadLink();
     })
 
 	async function getUserInfo(){
@@ -48,7 +52,7 @@
 	}
 
 	async function obtenirStagiaires() {
-		stagiaires.clear();
+		// stagiaires.clear();
 		const unsub = onSnapshot(doc(db, "utilisateurs", $userId), (doc) => { 
 			let isStagairesEmpty: boolean = doc.get("stagiaires") === undefined;
 			console.log(isStagairesEmpty);
@@ -80,10 +84,11 @@
 	  let uidRecipientChoisi = (event.target as HTMLButtonElement).name;
 	//   stagiaires.set(uidRecipientChoisi, nomChoisi);
 	  // Convert Map to object before updating Firestore
-	  const stagiairesObject = Object.fromEntries(stagiaires);
+	//   const stagiairesObject = Object.fromEntries(stagiaires);
 	  await updateDoc(doc(db, "utilisateurs", $userId), {
-	    stagiaires: stagiairesObject
+	    stagiaires: arrayUnion(uidRecipientChoisi)
 	  })
+
 	  fermerPopup();
 	}
 
@@ -91,11 +96,25 @@
 		afficherPopup = true;
 	}
 	async function fermerPopup() {
-		afficherPopup = false;
-		console.log(stagiaires);
-		console.log(stagiairesDispo);
-		
+		afficherPopup = false;		
 	}
+
+	async function getDownloadLink() {
+		const storage = getStorage(); // Assuming you have Firebase initialized
+		stagiaires.forEach((key, value) => {
+			const storageRef = ref(storage, "cv/" + key);
+			try {
+			  const url = getDownloadURL(storageRef);
+			  console.log(url);
+			//   listeURLDownload.set(key, url); 
+			  return url;
+			} catch (error) {
+			  console.error('Erreur:', error);
+			}	
+			
+		});
+	}
+
 
 
 </script>
@@ -165,13 +184,14 @@
 		</div>
 		{#if $role === "poster"}
 		<button class="btn btn-primary" on:click={ouvrirPopUp}>Ajouter stagiaire</button>	
-		{/if}
+		<h3>Stagiaires:</h3>
 		<ul class="conversations-list">
 			{#each stagiaires as [key, value]}
 				<li class="conversation-item">{key}</li>
 				<hr class="conversation-separator" />
 			{/each}
 		</ul>
+		{/if}
 	</div>
 </div>
 
