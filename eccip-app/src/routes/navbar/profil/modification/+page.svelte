@@ -1,5 +1,4 @@
 <script lang="ts">
-	//  in this I gave random values but when db is connected you can import all of these
 	import '$lib/style.css';
 	import { userId } from '$lib/stores/userId';
 	import { page } from '$app/stores';
@@ -8,13 +7,13 @@
 
 	const db = firebase.db;
 
-	let prenom;
-	let nom;
-	let typeUser;
-	let email;
-	let bio;
-	let tagEmploi;
-	let localisation;
+	let prenomTempo:string;
+	let nomTempo:string;
+	let typeUserTempo:string;
+	let emailTempo:string;
+	let bioTempo:string;
+	let tagEmploiTempo:string;
+	let localisationTempo:string;
 
 	async function getUserInfo() {
 		$userId = $page.url.searchParams.get('userId')!;
@@ -22,24 +21,18 @@
 		const docSnap = await getDoc(docRef);
 		if (docSnap.exists()) {
 			const data = docSnap.data();
-			prenom = data.prenom;
-			nom = data.nom;
-			typeUser = data.typeUser ?? '';
-			email = data.email;
-			bio = data.bio ?? '';
-			tagEmploi = data.tagEmploi ?? '';
-			localisation = data.localisation ?? '';
+			prenomTempo = data.prenom;
+			nomTempo = data.nom;
+			typeUserTempo = data.typeUser;
+			emailTempo = data.email;
+			bioTempo = data.bio;
+			tagEmploiTempo = data.tagEmploi;
+			localisationTempo = data.localisation;
 		}
 	}
 	getUserInfo();
 
-	let prenomTempo = prenom;
-	let nomTempo = nom;
-	let typeUserTempo = typeUser;
-	let emailTempo = email;
-	let bioTempo = bio;
-	let tagEmploiTempo = tagEmploi;
-	let localisationTempo = localisation;
+	
 
 	async function handleSubmit() {
 		await setDoc(doc(db, 'utilisateurs', $userId), {
@@ -50,7 +43,9 @@
 			bio: bioTempo ?? '',
 			tagEmploi: tagEmploiTempo ?? '',
 			localisation: localisationTempo ?? ''
+			
 		});
+		window.location.href = "/profil"+"?userId="+$userId;
 	}
 </script>
 
@@ -139,7 +134,10 @@
 				bind:value={localisationTempo}
 			/>
 		</div>
-
+		<div>
+			photo profile
+		</div>
+		<!-- bouton pour confirmer la modification  -->
 		<div>
 			<button type="submit" class="btn btn-primary" on:click={handleSubmit}>Confirmer</button>
 		</div>

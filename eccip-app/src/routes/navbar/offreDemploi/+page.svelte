@@ -41,6 +41,7 @@ onMount(() => {
 		  <div class="row">
 			<div class="boutonPageOffre">
 			  <button class="btn btn-primary" on:click={pageCréationOffre}>créer une offre</button>
+			  <!-- <button class="button trier">Filter</button>-->
 			</div>
 		  </div>
 		</header>
@@ -55,6 +56,7 @@ onMount(() => {
 					<p>Lieu: {offre.location} </p>
 					<p>Salaire: {offre.salaire} $ par h</p>
 					<p>Heures: {offre.heures} h</p>
+					<button class="button postuler">Postuler</button>
 				  </li>
 				{/each}
 			  {:else}

@@ -1,6 +1,6 @@
 <script lang="ts">
 import firebase from '$lib/firebase';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, getMultiFactorResolver } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import { userId } from '$lib/stores/userId';
 import { role } from '$lib/stores/role';
