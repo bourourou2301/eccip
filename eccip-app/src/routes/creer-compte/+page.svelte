@@ -80,7 +80,7 @@ async function handleRegister() {
      <p></p>
      <input bind:value={nom} type="text" placeholder="Nom" />
      <p></p>
-     <input bind:group={typeUser} type="radio" name="role" value="poster">Encadreur
+     <input bind:group={typeUser} type="radio" name="role" value="encadreur">Encadreur
      <p></p>
      <input bind:group={typeUser} type="radio" name="role" value="searcher">Stagiaire
      {#if typeUser === "searcher"}

@@ -1,8 +1,10 @@
 import firebase from '$lib/firebase';
-import { doc, getDoc, addDoc, collection, DocumentSnapshot } from "firebase/firestore"
+import {userId} from "$lib/stores/userId"
+import { doc, getDoc, addDoc, collection, DocumentSnapshot, setDoc, updateDoc, arrayUnion } from "firebase/firestore"
 const dbFS = firebase.db;
 
 class Offre {
+  offreUid?: string;
   titre?: string;
   domaine?: string;
   location?: string;
@@ -12,6 +14,7 @@ class Offre {
   applicants?: string[];
 
   constructor(
+    offreUid?: string,
     titre?: string,
     domaine?: string,
     location?: string,
@@ -20,6 +23,7 @@ class Offre {
     ownerUID?: string,
     applicants?: string[]
   ) {
+    this.offreUid = offreUid ?? '';
     this.titre = titre ?? '';
     this.domaine = domaine ?? '';
     this.location = location ?? '';
@@ -35,6 +39,7 @@ class Offre {
     }
 
     return new Offre(
+      data.offreUid ?? '',
       data.titre ?? '',
       data.domaine ?? '',
       data.location ?? '',
@@ -56,7 +61,10 @@ class Offre {
     // set(ref(db, "offres/"+referencePoste.key+"/ownerUID"), this.ownerUID);
 
     //firestore version
-    await addDoc(collection(dbFS, "offres"), {
+
+      
+
+      const docRef = await addDoc(collection(dbFS, "offres"), {
       domaine: this.domaine,
       heures: this.heures,
       location: this.location,
@@ -64,8 +72,12 @@ class Offre {
       salaire: this.salaire,
       titre: this.titre
     })
-
-
+    await updateDoc(doc(dbFS, "offres", docRef.id), {
+      offreUid: docRef.id
+    })
+    const userDocRef = await updateDoc(doc(dbFS, "utilisateurs", this.ownerUID! ), {
+      offres: arrayUnion(docRef.id)
+    })
   }
 }
 export default Offre;

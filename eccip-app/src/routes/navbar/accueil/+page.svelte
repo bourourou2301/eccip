@@ -16,8 +16,11 @@
 		collection,
 		query,
 		where,
-		getDocs
+		getDocs,
+		updateDoc,
+		arrayUnion
 	} from 'firebase/firestore';
+	import { off } from 'firebase/database';
 
 	let db = firebase.db;
 
@@ -26,25 +29,10 @@
 
 	onMount(() => {
 		getOffers();
-		console.log(arrayOffre);
-		
-
-		// get(dbRef).then((snapshot) => {
-		// 	snapshot.forEach((val) => {
-		// 		let titre = val.child('titre').val();
-		// 		let domaine = val.child('domaine').val();
-		// 		let location = val.child('location').val();
-		// 		let salaire = val.child('salaire').val();
-		// 		let heures = val.child('heures').val();
-
-		// 		arrayOffre.push(new Offre(titre, domaine, location, salaire, heures));
-		// 	});
-		// 	isOffersLoaded = true; // Set flag to true after data is loaded
-		// });
 	});
 
 	function pageCréationOffre() {
-		window.location.href = 'routes/offreDemploi/CreerOffre';
+		window.location.href = 'offreDemploi/CreerOffre';
 	}
 	async function getOffers() {
 		let offresRef = collection(db, 'offres');
@@ -52,9 +40,14 @@
 		const querySnapshot = await getDocs(q);
 		querySnapshot.forEach((doc) => {
 			arrayOffre.push(Offre.fromDataSnapshot(doc)!);
-			arrayOffre.push(new Offre("Assistant aux Enseignants","Enseignement","Cégep Bois-de-boulogne",18,20,$userId))
 		});
 		isOffersLoaded = true; // Set flag to true after data is loaded
+	}
+
+	async function postuler(offre: Offre) {
+		await updateDoc(doc(db, 'offres', offre.offreUid!), {
+			applicants: arrayUnion($userId)
+		});
 	}
 </script>
 
@@ -88,14 +81,14 @@
 						<p>Lieu: {offre.location}</p>
 						<p>Salaire: {offre.salaire} $ par h</p>
 						<p>Heures: {offre.heures} h</p>
-						<button class="button postuler">Postuler</button>
+						<button on:click={() => postuler(offre)} class="button postuler">Postuler</button>
 						<img
 							src="https://maps.googleapis.com/maps/api/staticmap?
-			 	center={offre.location}&
-			zoom=12&
-			 size=300x200&
-			 markers=color:red%7C{offre.location}&
-			 key=AIzaSyDQkV-WTexdOYO5QiC08c69WDWASBzlqGY"
+					center={encodeURI(offre.location ?? " ")}&
+					zoom=14&
+					size=300x200&
+					markers=color:red%7C{offre.location}&
+					key=AIzaSyDQkV-WTexdOYO5QiC08c69WDWASBzlqGY"
 						alt="location"/>
 					{/each}
 				{:else}
