@@ -35,72 +35,6 @@
         await obtenirListeUtilisateurs();
     })
     
-
-	async function continuerConvo(event: MouseEvent) {
-		listeMessages.clear();
-		uidRecipient = (event.target as HTMLButtonElement).value;
-		valeurCle = (event.target as HTMLButtonElement).name;
-		afficherChatComponent = true;
-		console.log(listeMessages);
-
-		await recuprerMessagesEnvoyes();
-        fermerPopup();
-	}
-
-	
-    async function recuprerMessagesEnvoyes() {
-        const unsub = onSnapshot(collection(db, "conversations", valeurCle, "messages"), (collection) => {
-            collection.forEach((doc) => {
-                if (doc.get("envoyePar") === $userId) {
-                  listeMessages.set(doc.get("message"), true);
-                } else {
-                  listeMessages.set(doc.get("message"), false)
-                }
-            });
-            listeMessages = listeMessages;
-        });
-    }
-
-//pk ca ecrit undefined kan tu load pour la premiere fois
-async function obtenirAnciensChats() {
-    const unsub = onSnapshot(collection(db, "utilisateurs", $userId, "chats"), (collection) => {
-        collection.forEach((doc) => {
-            let isDocumentEmpty: boolean = Object.keys(doc.data() || {}).length === 0;
-            if (!isDocumentEmpty) {
-                listeRecipient.set(doc.get("nomComplet"), doc.get("cleConversation"));
-                listeUtilisateursTextees.push(doc.get("utilisateurRecipient"));
-            }
-        });
-        isSnapshotLoaded = true;
-        listeRecipient = listeRecipient;
-        listeUtilisateursTextees = listeUtilisateursTextees;
-    });
-}
-
-    // async function obtenirListeUtilisateurs() {
-    //     const unsub = onSnapshot(collection(db, "utilisateurs"), (collection) => {
-    //         collection.forEach((doc) => {
-    //             if(uid === doc.get("uid")){
-    //                 console.log("Tu peux pas t'envoyer des messages a toi meme")
-    //             } else {
-    //                 if(listeUtilisateursTextees.length !== 0){
-    //                     listeUtilisateursTextees.forEach(element => {
-    //                         if(element === doc.get("uid")) {
-    //                             console.log("Vous avez deja un convo avec " + element);
-    //                         } else {
-    //                             listeUtilisateurs.set(doc.get("uid"), doc.get("prenom") + " " + doc.get("nom"));
-    //                         }
-    //                     });
-    //                 } else {
-    //                     listeUtilisateurs.set(doc.get("uid"), doc.get("prenom") + " " + doc.get("nom"));
-    //                 }
-    //                 listeUtilisateurs = listeUtilisateurs;
-    //             }
-    //         });
-    //     });
-    // }
-	
-	
 	async function creerConvo(event: MouseEvent) {
 		nomChoisi = (event.target as HTMLButtonElement).value;
 		uidRecipientChoisi = (event.target as HTMLButtonElement).name;
@@ -108,32 +42,91 @@ async function obtenirAnciensChats() {
     	fermerPopup();
 	}
 
-
-	async function obtenirListeUtilisateurs() {
-		const unsub = onSnapshot(collection(db, 'utilisateurs'), (collection) => {
-			collection.forEach((doc) => {
-				if ($userId === doc.get('uid')) {
-					console.log("Tu peux pas t'envoyer des messages a toi meme");
-				} else {
-					if (listeUtilisateursTextees.length !== 0) {
-						listeUtilisateursTextees.forEach((element) => {
-							if (element === doc.get('uid')) {
-								console.log('Vous avez deja un convo avec ' + element);
-							} else {
-								listeUtilisateurs.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
-							}
-						});
-					} else {
-						listeUtilisateurs.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
-					}
-				}
-				console.log(listeUtilisateursTextees);
-				listeUtilisateurs = listeUtilisateurs;
-			});
-		});
+	async function continuerConvo(event: MouseEvent) {
+		listeMessages.clear();
+		uidRecipient = (event.target as HTMLButtonElement).value;
+		valeurCle = (event.target as HTMLButtonElement).name;
+		afficherChatComponent = true;
+		console.log(listeMessages);
+		await recuprerMessagesEnvoyes();
+        fermerPopup();
 	}
 
+	
+    async function recuprerMessagesEnvoyes() {
+		const unsub = onSnapshot(collection(db, 'conversations', valeurCle, 'messages'), (collection) => {
+				collection.forEach((doc) => {
+					if (doc.get('envoyePar') === $userId) {
+						listeMessages.set(doc.get('message'), true);
+					} else {
+						listeMessages.set(doc.get('message'), false);
+					}
+				});
+				listeMessages = listeMessages;
+			}
+		);
+	}
+
+	async function obtenirAnciensChats() {
+	    const unsub = onSnapshot(collection(db, "utilisateurs", $userId, "chats"), (collection) => {
+	        collection.forEach((doc) => {
+	            let isDocumentEmpty: boolean = Object.keys(doc.data() || {}).length === 0;
+	            if (!isDocumentEmpty) {
+					listeUtilisateursTextees.push(doc.get("utilisateurRecipient"));
+	                listeRecipient.set(doc.get("nomComplet"), doc.get("cleConversation"));
+	            }
+	        });
+	        isSnapshotLoaded = true;
+			listeUtilisateursTextees = listeUtilisateursTextees;
+	        listeRecipient = listeRecipient;
+	    });
+	}
+
+	// async function obtenirListeUtilisateurs() {
+	// 	const unsub = onSnapshot(collection(db, 'utilisateurs'), (collection) => {
+	// 		listeUtilisateurs.clear();
+	// 		collection.forEach((doc) => {
+	// 			if ($userId === doc.get('uid')) {
+	// 				console.log("Tu peux pas t'envoyer des messages a toi meme");
+	// 			} else {
+	// 				if (listeUtilisateursTextees.length !== 0) { //pas vide
+	// 					listeUtilisateursTextees.forEach((element) => {
+	// 						if (element === doc.get('uid')) {
+	// 							console.log('Vous avez deja un convo avec ' + element);
+	// 						} else {
+	// 							listeUtilisateurs.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
+	// 						}
+	// 					});
+	// 				} else { //vide
+	// 					listeUtilisateurs.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
+	// 				}
+	// 			}
+	// 		});
+	// 		listeUtilisateurs = listeUtilisateurs;
+	// 	});
+	// }
+
+	async function obtenirListeUtilisateurs() {
+    	const unsub = onSnapshot(collection(db, 'utilisateurs'), (collection) => {
+    	    listeUtilisateurs.clear();
+			listeUtilisateurs = listeUtilisateurs;
+    	    collection.forEach((doc) => {
+    	        if ($userId === doc.get('uid')) {
+    	            console.log("Tu peux pas t'envoyer des messages a toi meme");
+    	        } else {
+    	            if (!listeUtilisateursTextees.includes(doc.get('uid'))) {
+    	                listeUtilisateurs.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
+    	            }
+    	        }
+    	    });
+			listeUtilisateurs = listeUtilisateurs;
+    	});
+	}
+
+
+
 	async function ouvrirPopUp() {
+		await obtenirListeUtilisateurs();
 		afficherPopup = true;
 	}
 	async function fermerPopup() {
@@ -155,7 +148,7 @@ async function obtenirAnciensChats() {
 				{#if afficherPopup}
 					<div class="popup-container">
 						<div class="popup">
-							<h2>Available Users</h2>
+							<h2>Utilisateur(s)</h2>
 							{#each listeUtilisateurs as [key, value]}
 								<button name={key} {value} on:click={creerConvo}>{value}</button>
 							{/each}

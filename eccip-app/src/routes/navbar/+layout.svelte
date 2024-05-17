@@ -28,7 +28,7 @@
 			loggedIn = loggedIn;
 			// profilURL = profilURL+"?userId="+$userId
 			if (fromCreerComptePage) {
-				goto('/accueil');
+				goto('/navbar/accueil');
 			} else {
 				goto(currentUrl);
 			}
