@@ -33,12 +33,21 @@
 	});
 
 	async function getOffres() {
+		if(typeUser = "encadreur"){
 		const offresRef = collection(db, 'offres');
 		const q = query(offresRef, where('ownerUID', '==', $userId));
 		const querySnapshot = await getDocs(q);
 		querySnapshot.forEach((doc) => {
 			arrayOffre.push(Offre.fromDataSnapshot(doc)!);
+		});}
+		else if(typeUser = "stagiaire"){
+			const offresRef = collection(db, 'offres');
+		const q = query(offresRef, where('applicants', '==', $userId));
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((doc) => {
+			arrayOffre.push(Offre.fromDataSnapshot(doc)!);
 		});
+		}
 		const docRef = doc(db, 'utilisateurs', $userId);
 		const docSnap = await getDoc(docRef);
 		if (docSnap.exists()) {

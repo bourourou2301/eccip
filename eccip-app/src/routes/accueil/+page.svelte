@@ -17,13 +17,10 @@
 		query,
 		where,
 		getDocs,
-
 		updateDoc,
-
 		arrayUnion
-
-
 	} from 'firebase/firestore';
+	import { off } from 'firebase/database';
 
 	let db = firebase.db;
 
@@ -47,10 +44,10 @@
 		isOffersLoaded = true; // Set flag to true after data is loaded
 	}
 
-	async function postuler(offre:Offre){
-		await updateDoc(doc(db, "offres", offre.offreUid!), {
+	async function postuler(offre: Offre) {
+		await updateDoc(doc(db, 'offres', offre.offreUid!), {
 			applicants: arrayUnion($userId)
-    })
+		});
 	}
 </script>
 
@@ -85,11 +82,14 @@
 						<p>Salaire: {offre.salaire} $ par h</p>
 						<p>Heures: {offre.heures} h</p>
 						<button on:click={() => postuler(offre)} class="button postuler">Postuler</button>
-						<!-- <img
+						<img
 							src="https://maps.googleapis.com/maps/api/staticmap?
-							center=whitehouseZ%C3%BCrich&zoom=12&size=400x400&key=AIzaSyC6U3lU8B7SlHHYuWpcPxHsgzJ4CwsnoYw"
-							alt="location"
-						/> -->
+					center={encodeURI(offre.location ?? " ")}&
+					zoom=14&
+					size=300x200&
+					markers=color:red%7C{offre.location}&
+					key=AIzaSyDQkV-WTexdOYO5QiC08c69WDWASBzlqGY"
+						/>
 					{/each}
 				{:else}
 					<p>Chargement des offres en cours...</p>
