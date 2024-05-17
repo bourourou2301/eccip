@@ -1,83 +1,106 @@
-<script lang="ts">
-	import Offre from "$lib/offre";
-	import firebase from "$lib/firebase";
-	import { ref, get} from "firebase/database";
-	import "$lib/style.css";
-	import { onMount } from "svelte";
-	let typeUser = ''; // la variable pour afficher le type de page correct selon le type de user
-	function pageCréationOffre() { window.location.href = 'offreDemploi/CreerOffre'; }
-		
-	
-		let db = firebase.database;
-		const dbRef = ref(db, "offres/")
-		
-let arrayOffre: Offre[] = [];
-let isOffersLoaded = false; // Flag to track data loading
+<script
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDQkV-WTexdOYO5QiC08c69WDWASBzlqGY"
+	,
+	lang="ts"
+>
+	import '$lib/style.css';
+	import { onMount } from 'svelte';
+	import Offre from '$lib/offre';
+	import { userId } from '$lib/stores/userId';
+	import firebase from '$lib/firebase';
+	import {
+		doc,
+		getDoc,
+		addDoc,
+		setDoc,
+		collection,
+		query,
+		where,
+		getDocs
+	} from 'firebase/firestore';
 
-onMount(() => {
-  get(dbRef).then((snapshot) => {
-	snapshot.forEach((val) => {
-	  let titre = val.child("titre").val();
-	  let domaine = val.child("domaine").val();
-	  let location = val.child("location").val();
-	  let salaire = val.child("salaire").val();
-	  let heures = val.child("heures").val();
 
-	  arrayOffre.push(new Offre(titre, domaine, location, salaire, heures));
+
+
+	let db = firebase.db;
+	let typeUser: string = '';
+	let arrayOffre: Offre[] = [];
+	let isOffersLoaded = false;
+
+	onMount(() => {
+		getOffres();
+
 	});
-	isOffersLoaded = true; // Set flag to true after data is loaded
-  });
-});
+
+	async function getOffres() {
+		const offresRef = collection(db, 'offres');
+		const q = query(offresRef, where('ownerUID', '==', $userId));
+		const querySnapshot = await getDocs(q);
+		querySnapshot.forEach((doc) => {
+			arrayOffre.push(Offre.fromDataSnapshot(doc)!);
+		});
+		const docRef = doc(db, 'utilisateurs', $userId);
+		const docSnap = await getDoc(docRef);
+		if (docSnap.exists()) {
+			typeUser = docSnap.data().typeUser;
+		}
+		isOffersLoaded = true;
+	}
+
+	async function modifierOffre(offre:Offre){
+		window.location.href = "offreDemploi/modification"+"?offreUID="+offre.offreUid;
+	}
+
 </script>
-	
-	<div class="bg-haut">
-		<div class="container-fluid text-center">
-		  <h1>Les offres d'emploi</h1>
-		</div>
-	  </div>
-	  
-	  <div class="contenu-page">
-		<header class="d-flex justify-content-center">
-		  <div class="row">
-			<div class="boutonPageOffre">
-			  <button class="btn btn-primary" on:click={pageCréationOffre}>créer une offre</button>
-			  <!-- <button class="button trier">Filter</button>-->
-			</div>
-		  </div>
-		</header>
-	  
-		<div class="offer-box">
-			<ul id="jobOffers">
-			  {#if isOffersLoaded}
+
+<!-- stagiaire ui -->
+{#if typeUser == 'stagiaire'}
+<div class="scroll-areaAccueil contenu-page">
+	<div class="offer-box">
+		<ul id="jobOffers">
+			{#if isOffersLoaded}
 				{#each arrayOffre as offre}
-				  <li class="job-item">
 					<h2>{offre.titre}</h2>
-					<p>Domaine: {offre.domaine} </p>
-					<p>Lieu: {offre.location} </p>
+					<p>Domaine: {offre.domaine}</p>
+					<p>Lieu: {offre.location}</p>
 					<p>Salaire: {offre.salaire} $ par h</p>
 					<p>Heures: {offre.heures} h</p>
-					<button class="button postuler">Postuler</button>
-				  </li>
+					<!-- <button on:click={() => postuler(offre)} class="button postuler">Postuler</button> -->
+					<!-- <img
+						src="https://maps.googleapis.com/maps/api/staticmap?
+						center=whitehouseZ%C3%BCrich&zoom=12&size=400x400&key=AIzaSyC6U3lU8B7SlHHYuWpcPxHsgzJ4CwsnoYw"
+						alt="location"
+					/> -->
 				{/each}
-			  {:else}
+			{:else}
 				<p>Chargement des offres en cours...</p>
-			  {/if}
-			</ul>
-		  </div>
-	  </div>
-	
-	
-	<style>
-			  .offer-box {
-				max-height: 2000px; /* Adjust height as needed */
-				overflow-y: scroll;
-				border: 1px solid #ddd;
-				padding: 10px;
-			  }
-			
-			  .job-item {
-				border: 1px solid #ddd; /* Solid border for all sides */
-				padding: 10px; /* Inner padding */
-				margin-bottom: 10px; /* Space between boxes */
-}
-	  </style>
+			{/if}
+		</ul>
+	</div>
+</div>
+{:else}
+<!-- encadreur ui -->
+<div class="scroll-areaAccueil contenu-page">
+	<div class="offer-box">
+		<ul id="jobOffers">
+			{#if isOffersLoaded}
+				{#each arrayOffre as offre}
+					<h2>{offre.titre}</h2>
+					<p>Domaine: {offre.domaine}</p>
+					<p>Lieu: {offre.location}</p>
+					<p>Salaire: {offre.salaire} $ par h</p>
+					<p>Heures: {offre.heures} h</p>
+					<button on:click={() => modifierOffre(offre)} class="button postuler">Modifier</button>
+					<!-- <img
+						src="https://maps.googleapis.com/maps/api/staticmap?
+						center=whitehouseZ%C3%BCrich&zoom=12&size=400x400&key=AIzaSyC6U3lU8B7SlHHYuWpcPxHsgzJ4CwsnoYw"
+						alt="location"
+					/> -->
+				{/each}
+			{:else}
+				<p>Chargement des offres en cours...</p>
+			{/if}
+		</ul>
+	</div>
+</div>
+{/if}

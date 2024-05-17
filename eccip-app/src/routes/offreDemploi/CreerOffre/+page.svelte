@@ -3,13 +3,14 @@
 	import {userId} from "$lib/stores/userId"
 	import Offre from '$lib/offre';
 
+	let offreUid: string;
 	let titre: string;
 	let domaine: string;
 	let localisation: string;
 	let salaire: number;
 	let heure: number;
 	async function creerOffre() {
-		let offer: Offre = new Offre(titre, domaine, localisation, salaire, heure, $userId);
+		let offer: Offre = new Offre(offreUid ,titre, domaine, localisation, salaire, heure, $userId);
 		offer.writeOfferToDb();
 	}
 </script>
