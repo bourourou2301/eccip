@@ -47,7 +47,6 @@
 		uidRecipient = (event.target as HTMLButtonElement).value;
 		valeurCle = (event.target as HTMLButtonElement).name;
 		afficherChatComponent = true;
-		console.log(listeMessages);
 		await recuprerMessagesEnvoyes();
         fermerPopup();
 	}
@@ -82,30 +81,6 @@
 	    });
 	}
 
-	// async function obtenirListeUtilisateurs() {
-	// 	const unsub = onSnapshot(collection(db, 'utilisateurs'), (collection) => {
-	// 		listeUtilisateurs.clear();
-	// 		collection.forEach((doc) => {
-	// 			if ($userId === doc.get('uid')) {
-	// 				console.log("Tu peux pas t'envoyer des messages a toi meme");
-	// 			} else {
-	// 				if (listeUtilisateursTextees.length !== 0) { //pas vide
-	// 					listeUtilisateursTextees.forEach((element) => {
-	// 						if (element === doc.get('uid')) {
-	// 							console.log('Vous avez deja un convo avec ' + element);
-	// 						} else {
-	// 							listeUtilisateurs.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
-	// 						}
-	// 					});
-	// 				} else { //vide
-	// 					listeUtilisateurs.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
-	// 				}
-	// 			}
-	// 		});
-	// 		listeUtilisateurs = listeUtilisateurs;
-	// 	});
-	// }
-
 	async function obtenirListeUtilisateurs() {
     	const unsub = onSnapshot(collection(db, 'utilisateurs'), (collection) => {
     	    listeUtilisateurs.clear();
@@ -132,6 +107,7 @@
 	async function fermerPopup() {
 		afficherPopup = false;
 	}
+	
 </script>
 
 <div class="titrePage">

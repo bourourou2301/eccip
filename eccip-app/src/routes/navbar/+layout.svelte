@@ -1,32 +1,34 @@
 <script lang="ts">
 	import '$lib/style.css';
 	import { userId } from '$lib/stores/userId';
+	import { role } from '$lib/stores/role';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import { signOut } from 'firebase/auth';
 	import firebase from '$lib/firebase';
 	import type { LayoutData } from './$types';
+	import { doc, getDoc } from 'firebase/firestore';
 	export let data: LayoutData;
 
-	
-	let isEncadreur: boolean;
+	const db = firebase.db;
+	let typeUser: string;
     let loggedIn :boolean = false;
-	// let profilURL :string = "/profil";
-	console.log("caca");
+	let profilURL :string = "/navbar/profil";
 	
 
 	onMount(async () => {
+
 		const currentUrl = window.location.href;
 		let fromCreerComptePage = currentUrl.includes('/creerCompte');
-		console.log("caca1");
 		const user: any = await data.getAuthUser();
-		console.log("caca2");
 		if (user.uid != undefined) {
-			console.log("caca3");
 			userId.set(user.uid)
+			const docRef = doc(db, "utilisateurs/" + user.uid);
+			const docSnap = await getDoc(docRef);
+			role.set(docSnap.get("typeUser"))
 			loggedIn = true;
 			loggedIn = loggedIn;
-			// profilURL = profilURL+"?userId="+$userId
+			profilURL = profilURL+"?userId="+$userId
 			if (fromCreerComptePage) {
 				goto('/navbar/accueil');
 			} else {
@@ -59,12 +61,12 @@
 	    <nav class="navbar">
 	        <a href="/navbar/accueil">Accueil</a>
 	        <a href="/navbar/chat">Chat</a>
-	        {#if isEncadreur}
+	        {#if $role === "poster"}
 	            <a href="/navbar/rapport/lire">Lire les rapports</a>
 	        {:else}
 	            <a href="/navbar/rapport/ecrire">Ecrire un rapport</a>
 	        {/if}
-	        <!-- <a href={profilURL}>Mon profil</a> -->
+	        <a href={profilURL}>Mon profil</a>
 	        <a href="/navbar/offreDemploi">Les offres d'emplois</a>
 	    </nav>
 	    <button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>

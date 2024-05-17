@@ -3,6 +3,7 @@ import firebase from '$lib/firebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import { userId } from '$lib/stores/userId';
+import { role } from '$lib/stores/role';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
@@ -40,6 +41,7 @@ async function handleRegister() {
    setDoc(doc(db, "utilisateurs", user.uid), docData)
    addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
    $userId = user.uid;
+   $role = typeUser;
    if (fichier) {
       // Create a storage reference
       const storageRef = ref(storage, `cv/${user.uid}/${fichier.name}`);
