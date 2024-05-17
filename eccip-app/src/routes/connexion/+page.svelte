@@ -19,7 +19,7 @@
        .then((result) => {
         const { user }: UserCredential = result;
         $userId = user.uid;
-        goto('/accueil');
+        goto('/navbar/accueil');
        })
        .catch((error) => {
         return error;

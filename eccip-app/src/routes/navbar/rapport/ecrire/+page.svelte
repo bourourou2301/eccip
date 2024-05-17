@@ -1,15 +1,12 @@
 <script lang="ts">
     import firebase from '$lib/firebase';
     import {doc, getDoc} from "firebase/firestore"; 
-    import {userId} from "$lib/stores/userId";
+    import { userId } from "$lib/stores/userId";
 
     const db = firebase.db;
     let afficherPopup:boolean = false;
-    let uid: string;
+    let uid: string = $userId.toString();    
 
-    // session.subscribe((cur:any) => {
-    //     uid = cur?.sUid.uid;
-    // })
 
     async function ouvrirPopUp() {
         afficherPopup = true;
@@ -19,7 +16,7 @@
     }
 
     async function recupererListeStagaires(): Promise<string[]> {
-        const docSnap = await getDoc(doc(db, "utilisateurs", $userId));
+        const docSnap = await getDoc(doc(db, "utilisateurs", uid));
         return docSnap.get("listeStagiairesGeres")
     }
     
