@@ -44,7 +44,7 @@
 </script>
 {#if loggedIn}
 	<div id="navbar-parent">
-		<div id="profile-pic"></div>
+		<!-- <div id="profile-pic"></div> -->
 		<nav class="navbar">
 			<a href="/accueil">Accueil</a>
 			<a href="/chat">Chat</a>
@@ -53,7 +53,6 @@
 			<a href="/offreDemploi">Les offres d'emplois</a>
 		</nav>
 		<button on:click={logout} class="btn btn-danger btn-sm">Se déconnecter</button>
-		<p>user: {$userId}</p>
 	</div>
 	{/if}
 
@@ -93,7 +92,7 @@
 		margin-bottom: 20px;
 	}
 
-	#profile-pic {
+	/* #profile-pic {
 		margin-left: auto;
 		margin-right: auto;
 		margin-top: 10px;
@@ -102,5 +101,5 @@
 		border-radius: 50%;
 		width: 65px;
 		height: 65px;
-	}
+	} */
 </style>

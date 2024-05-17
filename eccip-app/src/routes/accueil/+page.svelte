@@ -52,7 +52,7 @@
 		const querySnapshot = await getDocs(q);
 		querySnapshot.forEach((doc) => {
 			arrayOffre.push(Offre.fromDataSnapshot(doc)!);
-			arrayOffre.push(new Offre('titre', 'domaine', 'location', 100, 10, 'ownerUID'));
+			arrayOffre.push(new Offre("Assistant aux Enseignants","Enseignement","Cégep Bois-de-boulogne",18,20,$userId))
 		});
 		isOffersLoaded = true; // Set flag to true after data is loaded
 	}
@@ -62,7 +62,7 @@
 	<div class="jumbotron">
 		<div class="boxTitre">
 			<h1 class="companie">Eccip</h1>
-			<p class="description-companie">We specialize in flemmardise</p>
+			<p class="description-companie"></p>
 		</div>
 	</div>
 	<div class="boxLogo"></div>

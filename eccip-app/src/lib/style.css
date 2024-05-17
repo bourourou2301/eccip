@@ -211,8 +211,9 @@ header {
 }
 .creation-compte{
     background-image: url(logo.jpg);
-    background-repeat: no-repeat;
-    background-size: contain;
+    background-repeat: repeat;
+    background-size:contain;
+    background-position: top;
     max-width: 100vw;
     max-height: 25vh;
 
