@@ -3,7 +3,6 @@ import firebase from '$lib/firebase';
 import { createUserWithEmailAndPassword, getMultiFactorResolver } from 'firebase/auth';
 import { goto } from '$app/navigation';
 import { userId } from '$lib/stores/userId';
-import { role } from '$lib/stores/role';
 import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
 import { getStorage, ref, uploadBytesResumable } from "firebase/storage";
 
@@ -17,8 +16,7 @@ let prenom: string = '';
 let nom: string = '';
 let typeUser: string = '';
 let bonMDP:boolean= true;
-let fichier: File | undefined;
-let montrerFichier: boolean = false;
+
 
 
 
@@ -27,7 +25,7 @@ async function handleRegister() {
   // Créer un nouveau compte
  await createUserWithEmailAndPassword(auth, email, password)
   .then((result) => {
-
+  
    const { user } = result;
 
    const docData = {
@@ -41,13 +39,7 @@ async function handleRegister() {
    setDoc(doc(db, "utilisateurs", user.uid), docData)
    addDoc(collection(db, "utilisateurs", user.uid, "chats"), {})
    $userId = user.uid;
-   $role = typeUser;
-   if (fichier) {
-      // Create a storage reference
-      const storageRef = ref(storage, `cv/${user.uid}/${fichier.name}`);
-      const uploadTask = uploadBytesResumable(storageRef, fichier);
-    }
-   goto('/navbar/accueil');
+   goto('/');
   })
   .catch((error) => {
    console.log(error)
@@ -60,7 +52,12 @@ async function handleRegister() {
 
   async function handleFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
-    fichier = input.files?.[0]; // Get the first file from the input
+    const file = input.files?.[0]; // Get the first file from the input
+    if (file) {
+      // Create a storage reference
+      const storageRef = ref(storage, `cv/${file.name}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+    }
   }
 
 
@@ -82,10 +79,7 @@ async function handleRegister() {
      <p></p>
      <input bind:group={typeUser} type="radio" name="role" value="encadreur">Encadreur
      <p></p>
-     <input bind:group={typeUser} type="radio" name="role" value="searcher">Stagiaire
-     {#if typeUser === "searcher"}
-      <input type="file" on:change={handleFileChange} placeholder=""/> Déposez votre CV !
-      {/if}
+     <input bind:group={typeUser} type="radio" name="role" value="stagiaire">Stagiaire
      <button type="submit">S'inscrire!</button>
     </div>
 

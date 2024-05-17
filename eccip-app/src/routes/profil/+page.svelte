@@ -1,13 +1,9 @@
 <script lang="ts">
 	import '$lib/style.css';
 	import { userId } from '$lib/stores/userId';
-	import { role } from '$lib/stores/role';
 	import firebase from '$lib/firebase';
-	import { doc, getDoc, onSnapshot, updateDoc, collection } from 'firebase/firestore';
+	import { doc, getDoc } from 'firebase/firestore';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
-	import { arrayUnion } from 'firebase/firestore/lite';
-	import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 	const db = firebase.db;
 
 	let prenom = '';
@@ -17,19 +13,9 @@
 	let bio = '';
 	let tagEmploi = '';
 	let localisation = '';
-	let afficherPopup: boolean = false;
-	let stagiaires: Map<string, string> = new Map();
-	let stagiairesDispo: Map<string, string> = new Map();
-	let listeURLDownload: Map<string, string> = new Map();
 
-	onMount(async () => {
-        if($role === "poster") {
-			await obtenirStagiaires();
-			await obtenirStagiairesDispo();
-		}
-		getDownloadLink();
-    })
 
+	
 	async function getUserInfo(){
 		$userId = $page.url.searchParams.get("userId")!
 		const docRef = doc(db, 'utilisateurs', $userId);
@@ -45,78 +31,10 @@
 			localisation = data.localisation ?? '';
 		}
 	}
-	
 	getUserInfo();
 	function modifierProfil() {
 		window.location.href = "/profil/modification"+"?userId="+$userId;
 	}
-
-	async function obtenirStagiaires() {
-		// stagiaires.clear();
-		const unsub = onSnapshot(doc(db, "utilisateurs", $userId), (doc) => { 
-			let isStagairesEmpty: boolean = doc.get("stagiaires") === undefined;
-			console.log(isStagairesEmpty);
-	        if (!isStagairesEmpty) {
-				console.log(doc.get("stagiaires"));
-			}
-		});
-	}
-
-	async function obtenirStagiairesDispo() {
-    	const unsub = onSnapshot(collection(db, 'utilisateurs'), (collection) => {
-    	    stagiairesDispo.clear();
-			stagiairesDispo = stagiairesDispo;
-    	    collection.forEach((doc) => {
-    	        if ($userId === doc.get('uid')) {
-    	        } else {
-    	            if (!stagiaires.has(doc.get('uid')) && doc.get("typeUser") !== "poster") {
-    	                stagiairesDispo.set(doc.get('uid'), doc.get('prenom') + ' ' + doc.get('nom'));
-    	            }
-    	        }
-    	    });
-			stagiairesDispo = stagiairesDispo;
-    	});
-	}
-
-
-	async function ajouterSatgiaire(event: MouseEvent) {
-	  let nomChoisi = (event.target as HTMLButtonElement).value;
-	  let uidRecipientChoisi = (event.target as HTMLButtonElement).name;
-	//   stagiaires.set(uidRecipientChoisi, nomChoisi);
-	  // Convert Map to object before updating Firestore
-	//   const stagiairesObject = Object.fromEntries(stagiaires);
-	  await updateDoc(doc(db, "utilisateurs", $userId), {
-	    stagiaires: arrayUnion(uidRecipientChoisi)
-	  })
-
-	  fermerPopup();
-	}
-
-	async function ouvrirPopUp() {
-		afficherPopup = true;
-	}
-	async function fermerPopup() {
-		afficherPopup = false;		
-	}
-
-	async function getDownloadLink() {
-		const storage = getStorage(); // Assuming you have Firebase initialized
-		stagiaires.forEach((key, value) => {
-			const storageRef = ref(storage, "cv/" + key);
-			try {
-			  const url = getDownloadURL(storageRef);
-			  console.log(url);
-			//   listeURLDownload.set(key, url); 
-			  return url;
-			} catch (error) {
-			  console.error('Erreur:', error);
-			}	
-			
-		});
-	}
-
-
-
 </script>
 
 <div class="container-fluid text-center bg-haut">
@@ -180,29 +98,9 @@
 			<input type="text" class="form-control" value={localisation} readonly />
 		</div>
 		<div class="modifierProfil">
-			<button type="submit" class="btn btn-primary" on:click={modifierProfil}>Modifier profil</button>
+			<button type="submit" class="btn btn-primary" on:click={modifierProfil}
+				>Modifier profil</button
+			>
 		</div>
-		{#if $role === "poster"}
-		<button class="btn btn-primary" on:click={ouvrirPopUp}>Ajouter stagiaire</button>	
-		<h3>Stagiaires:</h3>
-		<ul class="conversations-list">
-			{#each stagiaires as [key, value]}
-				<li class="conversation-item">{key}</li>
-				<hr class="conversation-separator" />
-			{/each}
-		</ul>
-		{/if}
 	</div>
 </div>
-
-{#if afficherPopup}
-	<div class="popup-container">
-		<div class="popup">
-			<h2>Stagiare(s)</h2>
-			{#each stagiairesDispo as [key, value]}
-			<button name={value} value={key} on:click={ajouterSatgiaire}>{value}</button>
-			{/each}
-			<button on:click={fermerPopup}>Close</button>
-		</div>
-	</div>
-{/if}
